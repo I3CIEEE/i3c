@@ -1,5 +1,7 @@
 package i3c.main;
 
+import java.applet.Applet;
+import java.awt.Image;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -7,7 +9,7 @@ import java.net.SocketException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Server {
+public class Server extends Applet {
 	
 	private DatagramSocket aSocket;
 	
@@ -52,6 +54,10 @@ public class Server {
 //               aSocket.receive(request);
 //
 //              //mostramos la imagen
+           
+           Image imagen = getImage (getDocumentBase(), "fichero.gif");
+           imagen.
+           
            		System.out.print("bytes: ");
                
            		System.out.println(Byte.valueOf(buffer[0]));
