@@ -4,9 +4,7 @@ import java.applet.Applet;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.InetAddress;
 import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -47,8 +45,7 @@ public class Server extends Applet {
 
 			// Crea un socket para datagramas y le asocia al puerto.
 			aSocket = new DatagramSocket(port);
-			System.out.println(port);
-
+			
 			// Creamos un buffer para entrada paquetes de un fotograma.
 			byte[] buffer = new byte[20000];
 
@@ -56,10 +53,9 @@ public class Server extends Applet {
 			DatagramPacket request = new DatagramPacket(buffer, buffer.length);
 		
 			while (true) {
-
 				// Esperamos a recibir algun paquete de un cliente.
 				aSocket.receive(request);
-			System.out.println("recibo");
+				
 				v.cargaImagen(buffer);
 
 				// mostramos la imagen
@@ -90,13 +86,6 @@ public class Server extends Applet {
 		int port = 14000;
 
 		port = usage(args, port);
-		
-		try {
-			System.out.println(InetAddress.getLocalHost().getHostAddress());
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
 		Server s = new Server();
 		s.start(port);
