@@ -1,11 +1,9 @@
 package com.i3c;
 
 import java.io.ByteArrayOutputStream;
-import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.InetAddress;
 import java.net.SocketException;
-import java.net.UnknownHostException;
+
 import android.graphics.ImageFormat;
 import android.graphics.Rect;
 import android.graphics.YuvImage;
@@ -19,23 +17,18 @@ import ioio.lib.util.IOIOLooper;
 import ioio.lib.util.android.IOIOActivity;
 
 public class Main extends IOIOActivity {
-	
-	public static int mensaje_veloc = 550;
+
+	public static int mensaje_veloc = 620;
 	public static int mensaje_giro = 500;
 
-	//Variables camara
+	// Variables camara
 	private SurfaceView preview = null;
 	private SurfaceHolder previewHolder = null;
 	private Camera camera = null;
 	private boolean inPreview = false;
 	private boolean cameraConfigured = false;
 	private Camera.Size size = null;
-	
-	int port = 14000; //Ip y puerto StremingServer
-	String host = "192.168.0.149";
 	DatagramSocket s;
-	
-	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,19 +36,18 @@ public class Main extends IOIOActivity {
 		setContentView(R.layout.surface_view);
 		
 		try {
-			System.out.println(InetAddress.getByName(host));
-			s = new DatagramSocket(port,
-					InetAddress.getByName(host));
-		} catch (SocketException | UnknownHostException e) {
+			s = new DatagramSocket();
+		} catch (SocketException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-//		preview = (SurfaceView) findViewById(R.id.preview);
-//		previewHolder = preview.getHolder();
-//		previewHolder.addCallback(surfaceCallback);
-		//previewHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+		preview = (SurfaceView) findViewById(R.id.preview);
+		previewHolder = preview.getHolder();
+		previewHolder.addCallback(surfaceCallback);
+		// previewHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 	}
-	
+
 	@Override
 	protected IOIOLooper createIOIOLooper() {
 		return new BucleIOIO();
@@ -65,8 +57,8 @@ public class Main extends IOIOActivity {
 	public void onResume() {
 		super.onResume();
 
-//		camera = Camera.open();
-//		startPreview();
+		camera = Camera.open();
+		startPreview();
 	}
 
 	@Override
@@ -75,11 +67,12 @@ public class Main extends IOIOActivity {
 		if (inPreview) {
 			camera.stopPreview();
 		}
-		
+
 		camera.setPreviewCallback(null);
 		camera.release();
 		camera = null;
 		inPreview = false;
+		s.close();
 		super.onPause();
 	}
 
@@ -137,7 +130,7 @@ public class Main extends IOIOActivity {
 		}
 	}
 
-	//Handler para detectar cuando se crea,cambia o se destruye la preview
+	// Handler para detectar cuando se crea,cambia o se destruye la preview
 	SurfaceHolder.Callback surfaceCallback = new SurfaceHolder.Callback() {
 		public void surfaceCreated(SurfaceHolder holder) {
 			// no-op -- wait until surfaceChanged()
@@ -169,26 +162,16 @@ public class Main extends IOIOActivity {
 						size.width, size.height, null /* strides */);
 				ByteArrayOutputStream out = new ByteArrayOutputStream();
 				image.compressToJpeg(rectangle, 71, out);
-				
-				//System.out.println("envio: "+ out.toByteArray());
-				try {
-					DatagramPacket pack = new DatagramPacket(out.toByteArray(), out.toByteArray().length);
-					
-					s.send(pack);
+				// System.out.println("envio: "+ out.toByteArray());
 
-					s.close();
-				} catch (Exception e) {
-					e.printStackTrace();
-
-				}
-				//Send(out.toByteArray());
+				Send(out.toByteArray());
 			}
 		}
 	};
 
 	public void Send(byte[] out) {
 		try {
-			SendStreamingServer obj = new SendStreamingServer(out);
+			SendStreamingServer obj = new SendStreamingServer(out,s);
 			obj.start();
 			obj.join();
 		} catch (Exception e) {
