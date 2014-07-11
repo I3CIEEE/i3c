@@ -1,10 +1,8 @@
 package i3c.main;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,9 +26,9 @@ public class Video extends JFrame {
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	}
 
-	public void cargaImagen(String path) {
+	public void cargaImagen(byte[] in) {
 		try {
-			imgStream = new FileInputStream(new File(path));
+			imgStream = new ByteArrayInputStream(in);
 			imagen = ImageIO.read(imgStream);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -41,11 +39,6 @@ public class Video extends JFrame {
 		}
 
 		repaint();
-	}
-
-	public static void main(String[] arg) {
-		Video v = new Video();
-		v.cargaImagen("/home/danigs/Descargas/IMG_20140707_213937.JPG");
 	}
 
 	@Override
