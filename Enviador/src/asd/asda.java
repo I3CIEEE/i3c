@@ -7,7 +7,7 @@ import java.net.InetAddress;
 public class asda {
 	
 	int port = 14000; //Ip y puerto StremingServer
-	String host = "192.168.0.149";
+	String host = "127.0.1.1";
 	DatagramSocket s;
 
 	/**

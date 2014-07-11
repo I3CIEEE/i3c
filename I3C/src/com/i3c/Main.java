@@ -6,7 +6,6 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
-
 import android.graphics.ImageFormat;
 import android.graphics.Rect;
 import android.graphics.YuvImage;
@@ -189,7 +188,7 @@ public class Main extends IOIOActivity {
 
 	public void Send(byte[] out) {
 		try {
-			SendSteamingServer obj = new SendSteamingServer(out);
+			SendStreamingServer obj = new SendStreamingServer(out);
 			obj.start();
 			obj.join();
 		} catch (Exception e) {
