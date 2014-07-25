@@ -5,11 +5,6 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 
 public class asda {
-	
-	int port = 14000; //Ip y puerto StremingServer
-	String host = "127.0.1.1";
-	DatagramSocket s;
-
 	/**
 	 * @param args
 	 */
@@ -19,7 +14,7 @@ public class asda {
 			String host = "192.168.0.149";
 			
 			DatagramSocket s = new DatagramSocket();
-			InetAddress Ip = InetAddress.getByName("193.147.73.208");
+			InetAddress Ip = InetAddress.getByName(host);
 			byte[] sendData = new byte[1024];
 			String sentence = "hola";
 		    sendData = sentence.getBytes();
@@ -29,7 +24,7 @@ public class asda {
 			//DatagramPacket pack = new DatagramPacket(output, output.length);
 			
 			//s.send(pack);
-
+			System.out.println("verga");
 			s.close();
 		} catch (Exception e) {
 			e.printStackTrace();

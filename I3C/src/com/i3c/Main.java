@@ -3,6 +3,7 @@ package com.i3c;
 import java.io.ByteArrayOutputStream;
 import java.net.DatagramSocket;
 import java.net.SocketException;
+import java.nio.ByteBuffer;
 
 import android.graphics.ImageFormat;
 import android.graphics.Rect;
@@ -18,7 +19,7 @@ import ioio.lib.util.android.IOIOActivity;
 
 public class Main extends IOIOActivity {
 
-	public static int mensaje_veloc = 620;
+	public static int mensaje_veloc = 550;
 	public static int mensaje_giro = 500;
 
 	// Variables camara
@@ -29,16 +30,17 @@ public class Main extends IOIOActivity {
 	private boolean cameraConfigured = false;
 	private Camera.Size size = null;
 	DatagramSocket s;
+	static int numSec = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.surface_view);
-		
+
 		try {
 			s = new DatagramSocket();
 		} catch (SocketException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 
@@ -160,18 +162,29 @@ public class Main extends IOIOActivity {
 
 				YuvImage image = new YuvImage(data, ImageFormat.NV21,
 						size.width, size.height, null /* strides */);
+
 				ByteArrayOutputStream out = new ByteArrayOutputStream();
 				image.compressToJpeg(rectangle, 71, out);
-				// System.out.println("envio: "+ out.toByteArray());
 
-				Send(out.toByteArray());
+				// Add at the end of the array of image the numSec
+				byte[] numSecArray = ByteBuffer.allocate(4).putInt(numSec).array();
+				numSec++;
+				Send(concatenateByteArrays(out.toByteArray(),numSecArray));
+				//Send(data);
 			}
 		}
 	};
 
+	byte[] concatenateByteArrays(byte[] a, byte[] b) {
+		byte[] result = new byte[a.length + b.length];
+		System.arraycopy(a, 0, result, 0, a.length);
+		System.arraycopy(b, 0, result, a.length, b.length);
+		return result;
+	}
+
 	public void Send(byte[] out) {
 		try {
-			SendStreamingServer obj = new SendStreamingServer(out,s);
+			SendStreamingServer obj = new SendStreamingServer(out, s);
 			obj.start();
 			obj.join();
 		} catch (Exception e) {
