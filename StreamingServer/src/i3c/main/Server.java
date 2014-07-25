@@ -27,27 +27,12 @@ public class Server extends Applet {
 		}
 		return port;
 	}
-
-	public static byte[] hexStringToByteArray(String s) {
-		int len = s.length();
-		byte[] data = new byte[len / 2];
-		for (int i = 0; i < len; i += 2) {
-			data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4) + Character
-					.digit(s.charAt(i + 1), 16));
-		}
-		return data;
-	}
-
-	public void start(int port) {
-		Video v = new Video();
-		
+	
+	public void recibeVideo(Video v){
 		try {
-
-			// Crea un socket para datagramas y le asocia al puerto.
-			aSocket = new DatagramSocket(port);
 			
 			// Creamos un buffer para entrada paquetes de un fotograma.
-			byte[] buffer = new byte[20000];
+			byte[] buffer = new byte[15000];
 
 			// Genera un datagrama para mensages de longitud indicada.
 			DatagramPacket request = new DatagramPacket(buffer, buffer.length);
@@ -55,28 +40,37 @@ public class Server extends Applet {
 			while (true) {
 				// Esperamos a recibir algun paquete de un cliente.
 				aSocket.receive(request);
-				
+				System.out.println("Foto recibida");
 				v.cargaImagen(buffer);
-
-				// mostramos la imagen
-
 			}
 
 		} catch (SocketException ex) {
-			System.out.println("sockex");
 
 			Logger.getLogger(Server.class.getName())
 					.log(Level.SEVERE, null, ex);
 
 		} catch (IOException ex) {
-			System.out.println("ioEx");
 
 			Logger.getLogger(Server.class.getName())
 					.log(Level.SEVERE, null, ex);
-
-		} catch(Exception e){
-			System.out.println("def");
 		}
+
+	}
+
+	public void start(int port) {
+		Video v = new Video();
+		
+		
+		
+		// Crea un socket para datagramas y le asocia al puerto.
+		try {
+			aSocket = new DatagramSocket(port);
+			recibeVideo(v);
+		} catch (SocketException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	/**
