@@ -166,9 +166,10 @@ public class Main extends IOIOActivity {
 				ByteArrayOutputStream out = new ByteArrayOutputStream();
 				image.compressToJpeg(rectangle, 71, out);
 
-				// Add at the end of the array of image the numSec
+				// Add at the beginning of the arrayImage, the numSec
 				byte[] numSecArray = ByteBuffer.allocate(4).putInt(numSec).array();
 				numSec++;
+				System.out.println(numSecArray);
 				Send(concatenateByteArrays(out.toByteArray(),numSecArray));
 				//Send(data);
 			}
@@ -177,8 +178,8 @@ public class Main extends IOIOActivity {
 
 	byte[] concatenateByteArrays(byte[] a, byte[] b) {
 		byte[] result = new byte[a.length + b.length];
-		System.arraycopy(a, 0, result, 0, a.length);
-		System.arraycopy(b, 0, result, a.length, b.length);
+		System.arraycopy(b, 0, result, 0, b.length);
+		System.arraycopy(a, 0, result, b.length, a.length);
 		return result;
 	}
 
