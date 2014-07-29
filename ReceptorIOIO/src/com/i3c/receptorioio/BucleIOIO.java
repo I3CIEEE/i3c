@@ -30,6 +30,7 @@ public class BucleIOIO extends BaseIOIOLooper{
 			Thread.sleep(100);
 			
 		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 	}
 }

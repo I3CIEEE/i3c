@@ -16,7 +16,7 @@ public class SendStreamingServer extends Thread {
 	public void run() {
 		try {
 			int port = 14000; // Ip y puerto StremingServer
-			String host = "192.168.0.1";
+			String host = "192.168.0.149";
 			
 			InetAddress Ip = InetAddress.getByName(host);
 		

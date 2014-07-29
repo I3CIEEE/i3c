@@ -169,12 +169,18 @@ public class Main extends IOIOActivity {
 				// Add at the beginning of the arrayImage, the numSec
 				byte[] numSecArray = ByteBuffer.allocate(4).putInt(numSec).array();
 				numSec++;
-				System.out.println(numSecArray);
 				Send(concatenateByteArrays(out.toByteArray(),numSecArray));
-				//Send(data);
 			}
 		}
 	};
+	
+	public static int byteArrayToInt(byte[] b) 
+	{
+	    return   b[3] & 0xFF |
+	            (b[2] & 0xFF) << 8 |
+	            (b[1] & 0xFF) << 16 |
+	            (b[0] & 0xFF) << 24;
+	}
 
 	byte[] concatenateByteArrays(byte[] a, byte[] b) {
 		byte[] result = new byte[a.length + b.length];
