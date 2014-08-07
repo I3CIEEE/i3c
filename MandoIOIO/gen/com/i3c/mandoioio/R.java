@@ -1131,6 +1131,7 @@ containing a value of this type.
         public static final int top_action_bar=0x7f050020;
         public static final int up=0x7f050021;
         public static final int useLogo=0x7f050003;
+        public static final int videoImage=0x7f05003d;
         public static final int withText=0x7f05000c;
     }
     public static final class integer {
@@ -2607,7 +2608,7 @@ containing a value of this type.
          */
         public static final int[] MenuView = {
             0x010100ae, 0x0101012c, 0x0101012d, 0x0101012e,
-            0x0101012f, 0x01010130, 0x01010131, 0x01010438
+            0x0101012f, 0x01010130, 0x01010131, 0x010103f8
         };
         /**
           <p>

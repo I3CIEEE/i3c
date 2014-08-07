@@ -1,11 +1,19 @@
 package com.i3c.mandoioio;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 public class MainActivity extends Activity implements OnTouchListener {
@@ -16,6 +24,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 	private LinearLayout entrada;
 	private int centroX;
 	private int centroY;
+	private TaskVideo tv = new TaskVideo();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +35,9 @@ public class MainActivity extends Activity implements OnTouchListener {
 		thc = new Thread(hc);
 		thc.start();
 		entrada = (LinearLayout) findViewById(R.id.layout);
+		ImageView iv = (ImageView) findViewById(R.id.videoImage);
+		tv.execute(iv);
+		
 		entrada.setOnTouchListener(this);
 	}
 
@@ -54,6 +66,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 	public boolean onKeyDown(int keyCode, KeyEvent event){
 		if(keyCode == KeyEvent.KEYCODE_BACK){
 			thc.interrupt();
+			tv.cancel(false);
 		}
 		return super.onKeyDown(keyCode, event);
 	}
