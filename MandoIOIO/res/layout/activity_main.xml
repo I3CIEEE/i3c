@@ -1,13 +1,89 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/layout"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relative_loyout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
 
     <ImageView
         android:id="@+id/videoImage"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
         android:src="@drawable/abc_ab_stacked_transparent_dark_holo" />
 
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/azimuth_text"
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:text="@string/azimuth_text" />
+
+            <TextView
+                android:id="@+id/azimuth_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/azimuth_value" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/pitch_text"
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:text="@string/pitch_text" />
+
+            <TextView
+                android:id="@+id/pitch_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pitch_value" />
+        </LinearLayout>
+		<LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/roll_text"
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:text="@string/roll_text" />
+
+            <TextView
+                android:id="@+id/roll_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/roll_value" />
+        </LinearLayout>
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/accurancy_text"
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:text="@string/accurancy_text" />
+
+            <TextView
+                android:id="@+id/accurancy_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/accurancy_value" />
+        </LinearLayout>
+
+        
+    </LinearLayout>
+
+</RelativeLayout>

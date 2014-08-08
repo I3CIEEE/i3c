@@ -16,29 +16,29 @@ public class HiloControl implements Runnable{
 
 	@Override
 	public void run() {
-//		try {
+		try {
+			
+			int port = 15000; //Ip y puerto StremingServer
+			String host = "192.168.43.36";
+			
+//			DatagramSocket s = new DatagramSocket();
+//			InetAddress Ip = InetAddress.getByName(host);
+			for(;;){
+				if(coor.isPush()){
+					System.out.println("X: " + coor.getX());
+					System.out.println("Y: " + coor.getY());
+				}
+				Thread.sleep(20); 
+//				
+//				String sentence = Integer.toString(i);
+//				byte[] sendData = sentence.getBytes();
+//				DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, Ip, port); 
 //			
-//			int port = 15000; //Ip y puerto StremingServer
-//			String host = "192.168.43.36";
-//			
-////			DatagramSocket s = new DatagramSocket();
-////			InetAddress Ip = InetAddress.getByName(host);
-//			for(;;){
-//				if(coor.isPush()){
-//					System.out.println("X: " + coor.getX());
-//					System.out.println("Y: " + coor.getY());
-//				}
-//				Thread.sleep(200);
-////				
-////				String sentence = Integer.toString(i);
-////				byte[] sendData = sentence.getBytes();
-////				DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, Ip, port); 
-////			
-////				s.send(sendPacket);
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//
-//		}
+//				s.send(sendPacket);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}
 	}
 }
