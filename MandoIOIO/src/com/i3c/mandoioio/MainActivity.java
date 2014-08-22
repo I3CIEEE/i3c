@@ -13,10 +13,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnTouchListener,
 		SensorEventListener {
@@ -28,13 +26,16 @@ public class MainActivity extends Activity implements OnTouchListener,
 	private int centroX;
 	private int centroY;
 	private TaskVideo taskVideo = new TaskVideo();
-	
-	private long last_update = 0, last_movement = 0;
-	private float prevX = 0, prevY = 0, prevZ = 0;
-	private float curX = 0, curY = 0, curZ = 0;
 
-	public MainActivity() {
-	}
+	private long last_update = 0;
+	private float intY = 0, intZ = 0;
+	private float derY = 0, derZ = 0;
+	private float proY = 0, proZ = 0;
+	private float preY = 0, preZ = 0;
+	private float P = (float) 0.3;
+	private float I = (float) 0.7;
+	private TextView pitchTV;
+	private TextView rollTV;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,9 @@ public class MainActivity extends Activity implements OnTouchListener,
 		// Para recibir y mostrar las imagenes recibidas.
 		ImageView iv = (ImageView) findViewById(R.id.videoImage);
 		// taskVideo.execute(iv);
+
+		pitchTV = (TextView) findViewById(R.id.pitch_value);
+		rollTV = (TextView) findViewById(R.id.roll_value);
 
 	}
 
@@ -84,62 +88,52 @@ public class MainActivity extends Activity implements OnTouchListener,
 
 	@Override
 	public void onSensorChanged(SensorEvent event) {
-		
-		synchronized (this) {
-	        long current_time = event.timestamp;
-	        
-	        curY = event.values[1];
-	        curZ = event.values[2];
-	         
-	        if (prevX == 0 && prevY == 0 && prevZ == 0) {
-	            last_update = current_time;
-	            last_movement = current_time;
-	            prevX = curX;
-	            prevY = curY;
-	            prevZ = curZ;
-	        }
-	 
-	        long time_difference = current_time - last_update;
-	        if (time_difference > 0) {
-	            float movement = Math.abs((curX + curY + curZ) - (prevX - prevY - prevZ)) / time_difference;
-	            int limit = 1500;
-	            float min_movement = 1E-6f;
-	            if (movement > min_movement) {
-	                if (current_time - last_movement >= limit) {                    
-	                    Toast.makeText(getApplicationContext(), "Hay movimiento de " + movement, Toast.LENGTH_SHORT).show();
-	                }
-	                last_movement = current_time;
-	            }
-	            prevX = curX;
-	            prevY = curY;
-	            prevZ = curZ;
-	            last_update = current_time;
-	        }
-	         
-	         
-	        ((TextView) findViewById(R.id.pitch_text)).setText("Acelerómetro Y: " + curY);
-	        ((TextView) findViewById(R.id.roll_text)).setText("Acelerómetro Z: " + curZ);
-	    }   
+
+		long current_time = event.timestamp;
+
+		proY = event.values[1];
+		proZ = event.values[2];
+
+		long time_difference = current_time - last_update;
+		if (time_difference > 0) {
+			float Y;
+			float Z;
+			intY = proY * P + intY * I;
+			intZ = proZ * P + intZ * I;
+			Y = intY + derY;
+			Z = intZ + derZ;
+
+			last_update = current_time;
+			if (Math.abs(Y - preY + Z - preZ) > 0.1) {
+				pitchTV.setText(Float.toString(Y * 90));
+				rollTV.setText(Float.toString(Z * 90));
+				preY = Y;
+				preZ = Z;
+			}
+		}
+
 	}
 
 	@Override
-	public void onAccuracyChanged(Sensor sensor, int accuracy) {}
-	
+	public void onAccuracyChanged(Sensor sensor, int accuracy) {
+	}
+
 	@Override
 	protected void onResume() {
-	    super.onResume();
-	    SensorManager sm = (SensorManager) getSystemService(SENSOR_SERVICE);
-	    List<Sensor> sensors = sm.getSensorList(Sensor.TYPE_ACCELEROMETER);       
-	    if (sensors.size() > 0) {
-	        sm.registerListener(this, sensors.get(0), SensorManager.SENSOR_DELAY_GAME);
-	    }
+		super.onResume();
+		SensorManager sm = (SensorManager) getSystemService(SENSOR_SERVICE);
+		List<Sensor> sensors = sm.getSensorList(Sensor.TYPE_ACCELEROMETER);
+		if (sensors.size() > 0) {
+			sm.registerListener(this, sensors.get(0),
+					SensorManager.SENSOR_DELAY_GAME);
+		}
 	}
-	
+
 	@Override
 	protected void onPause() {
-	    SensorManager sm = (SensorManager) getSystemService(SENSOR_SERVICE);       
-	    sm.unregisterListener(this);
-	    super.onPause();
+		SensorManager sm = (SensorManager) getSystemService(SENSOR_SERVICE);
+		sm.unregisterListener(this);
+		super.onPause();
 	}
 
 }

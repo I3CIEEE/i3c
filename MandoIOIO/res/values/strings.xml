@@ -2,13 +2,9 @@
 <resources>
 
     <string name="app_name">MandoIOIO</string>
-    <string name="azimuth_text">Azimuth </string>
     <string name="pitch_text">Pitch</string>
     <string name="roll_text">Roll</string>
-    <string name="accurancy_text">Accuranzy</string>
-    <string name="azimuth_value">0 </string>
     <string name="pitch_value">0</string>
     <string name="roll_value">0</string>
-    <string name="accurancy_value">0</string>
 
 </resources>
