@@ -2,4 +2,6 @@
 
     <string name="app_name">ReceptorIOIO</string>
 
+    <string name="ServerNotRunning">Server not Running</string>
+
 </resources>
