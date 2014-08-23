@@ -4,41 +4,44 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
-import android.view.View.OnTouchListener;
+public class HiloControl implements Runnable {
 
-public class HiloControl implements Runnable{
+	DatagramSocket s;
+	ValoresControl valControl;
+	InetAddress Ip;
+	int port;
 	
-	private Coordenada coor;
-	
-	public HiloControl(Coordenada coor){
-		this.coor = coor;
+
+	public HiloControl(DatagramSocket s, ValoresControl valControl, InetAddress Ip, int port) {
+		this.s = s;
+		this.valControl = valControl;
+		this.Ip = Ip;
+		this.port = port;
 	}
 
 	@Override
 	public void run() {
 		try {
 			
-			int port = 15000; //Ip y puerto StremingServer
-			String host = "192.168.43.36";
-			
-			DatagramSocket s = new DatagramSocket();
-			InetAddress Ip = InetAddress.getByName(host);
-			for(;;){
-				if(coor.isPush()){
-					System.out.println("X: " + coor.getX());
-					System.out.println("Y: " + coor.getY());
-				}
-				Thread.sleep(20); 
-//				
-//				String sentence = Integer.toString(i);
-//				byte[] sendData = sentence.getBytes();
-//				DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, Ip, port); 
-//			
-//				s.send(sendPacket);
-			}
+			int giro = (int)Math.round(valControl.getY());
+
+			byte[] sendData = intToByteArray(giro);
+			DatagramPacket sendPacket = new DatagramPacket(sendData,
+					sendData.length, Ip, port);
+
+			s.send(sendPacket);
 		} catch (Exception e) {
 			e.printStackTrace();
 
 		}
+	}
+
+	public static byte[] intToByteArray(int a) {
+		byte[] ret = new byte[4];
+		ret[3] = (byte) (a & 0xFF);
+		ret[2] = (byte) ((a >> 8) & 0xFF);
+		ret[1] = (byte) ((a >> 16) & 0xFF);
+		ret[0] = (byte) ((a >> 24) & 0xFF);
+		return ret;
 	}
 }

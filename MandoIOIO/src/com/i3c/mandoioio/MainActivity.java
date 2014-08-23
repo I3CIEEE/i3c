@@ -50,7 +50,7 @@ public class MainActivity extends Activity implements SensorEventListener {
 		InetAddress Ip = InetAddress.getByName(host);
 		
 		// Para enviar los datos de velocidad y giro al movil.
-		hc = new HiloControl(valControl, Ip);
+		hc = new HiloControl(s, valControl, Ip, port);
 		thc = new Thread(hc);
 		thc.start();
 
