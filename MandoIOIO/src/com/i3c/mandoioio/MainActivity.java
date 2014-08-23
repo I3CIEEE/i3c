@@ -29,7 +29,7 @@ public class MainActivity extends Activity implements SensorEventListener {
 //	private RelativeLayout entrada;
 //	private int centroX;
 //	private int centroY;
-	private TaskVideo taskVideo = new TaskVideo();
+	private TaskVideo taskVideo;
 
 	private long last_update = 0;
 	private float intY = 0, intZ = 0;
@@ -56,7 +56,8 @@ public class MainActivity extends Activity implements SensorEventListener {
 
 		// Para recibir y mostrar las imagenes recibidas.
 		ImageView iv = (ImageView) findViewById(R.id.videoImage);
-		taskVideo.execute(iv);
+		taskVideo = new TaskVideo(iv);
+		taskVideo.execute();
 		
 
 		pitchTV = (TextView) findViewById(R.id.pitch_value);
