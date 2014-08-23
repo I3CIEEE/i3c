@@ -9,7 +9,7 @@ public class HiloServidor extends Thread {
 	DatagramSocket s;
 	TextView txtView;
 
-	HiloServidor(DatagramSocket s,TextView txtView) {
+	HiloServidor(DatagramSocket s, TextView txtView) {
 		this.s = s;
 		this.txtView = txtView;
 	}
@@ -27,10 +27,17 @@ public class HiloServidor extends Thread {
 				s.receive(request);
 				//Main.cambiarEstado("recibo "+ buffer,txtView);
 				System.out.println("recibo "+ buffer);
+				Main.mensaje_giro = byteArrayToInt(buffer);
 			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+
+	public static int byteArrayToInt(byte[] b) {
+		return b[3] & 0xFF | (b[2] & 0xFF) << 8 | (b[1] & 0xFF) << 16
+				| (b[0] & 0xFF) << 24;
+	}
+
 }

@@ -1100,20 +1100,21 @@ containing a value of this type.
         public static final int icon=0x7f05002a;
         public static final int ifRoom=0x7f05000a;
         public static final int image=0x7f050027;
+        public static final int linearLayout1=0x7f05003e;
         public static final int listMode=0x7f050001;
         public static final int list_item=0x7f050029;
         public static final int middle=0x7f050012;
         public static final int never=0x7f050009;
         public static final int none=0x7f050010;
         public static final int normal=0x7f050000;
-        public static final int pitch_text=0x7f05003e;
-        public static final int pitch_value=0x7f05003f;
+        public static final int pitch_text=0x7f05003f;
+        public static final int pitch_value=0x7f050040;
         public static final int progress_circular=0x7f050018;
         public static final int progress_horizontal=0x7f050019;
         public static final int radio=0x7f05002f;
         public static final int relative_loyout=0x7f05003c;
-        public static final int roll_text=0x7f050040;
-        public static final int roll_value=0x7f050041;
+        public static final int roll_text=0x7f050041;
+        public static final int roll_value=0x7f050042;
         public static final int search_badge=0x7f050032;
         public static final int search_bar=0x7f050031;
         public static final int search_button=0x7f050033;
@@ -1124,6 +1125,7 @@ containing a value of this type.
         public static final int search_plate=0x7f050036;
         public static final int search_src_text=0x7f050037;
         public static final int search_voice_btn=0x7f05003b;
+        public static final int seekBar1=0x7f050043;
         public static final int shortcut=0x7f05002e;
         public static final int showCustom=0x7f050007;
         public static final int showHome=0x7f050004;
@@ -1237,6 +1239,7 @@ containing a value of this type.
         public static final int pitch_value=0x7f0a0010;
         public static final int roll_text=0x7f0a000f;
         public static final int roll_value=0x7f0a0011;
+        public static final int video=0x7f0a0012;
     }
     public static final class style {
         /** 

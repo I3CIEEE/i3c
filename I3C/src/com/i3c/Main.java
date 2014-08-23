@@ -29,6 +29,8 @@ public class Main extends IOIOActivity {
 	private boolean inPreview = false;
 	private boolean cameraConfigured = false;
 	private Camera.Size size = null;
+	
+	//variables Trans
 	DatagramSocket s;
 	static int numSec = 0;
 

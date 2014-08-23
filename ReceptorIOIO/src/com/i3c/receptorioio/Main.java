@@ -43,16 +43,18 @@ public class Main extends IOIOActivity {
 		setContentView(R.layout.layout_main);
 		TextView txtView =(TextView) findViewById(R.id.textView1);
 		
-		preview = (SurfaceView) findViewById(R.id.preview);
-		previewHolder = preview.getHolder();
-		previewHolder.addCallback(surfaceCallback);
-		
 		try {
 			s = new DatagramSocket(port);
 			StartServer(txtView,s);
 		} catch (SocketException e) {
 			e.printStackTrace();
 		}
+		
+		preview = (SurfaceView) findViewById(R.id.preview);
+		previewHolder = preview.getHolder();
+		previewHolder.addCallback(surfaceCallback);
+		
+		
 	}
 
 	@Override
@@ -181,7 +183,7 @@ public class Main extends IOIOActivity {
 	
 	public void SendStreaming(byte[] out) {
 		try {
-			HiloClientStreaming obj = new HiloClientStreaming(out, s);
+			HiloSendStreaming obj = new HiloSendStreaming(out, s);
 			(new Thread(obj)).start();
 		} catch (Exception e) {
 			e.printStackTrace();

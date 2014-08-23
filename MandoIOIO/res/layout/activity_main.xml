@@ -5,14 +5,15 @@
 
     <ImageView
         android:id="@+id/videoImage"
-        android:contentDescription="@string/video"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+        android:contentDescription="@string/video"
         android:src="@drawable/abc_ab_stacked_transparent_dark_holo" />
 
     <LinearLayout
+        android:id="@+id/linearLayout1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
@@ -51,5 +52,15 @@
                 android:text="@string/roll_value" />
         </LinearLayout>
     </LinearLayout>
+
+    <SeekBar
+        android:id="@+id/seekBar1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="66dp"
+        android:layout_marginLeft="57dp"
+        android:layout_toRightOf="@+id/linearLayout1"
+        android:rotation="270" />
 
 </RelativeLayout>

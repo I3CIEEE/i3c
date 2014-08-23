@@ -2,6 +2,8 @@ package com.i3c.mandoioio;
 
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.List;
 
 import android.app.Activity;
@@ -11,11 +13,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.View.OnTouchListener;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class MainActivity extends Activity implements SensorEventListener {
@@ -30,6 +28,8 @@ public class MainActivity extends Activity implements SensorEventListener {
 //	private int centroX;
 //	private int centroY;
 	private TaskVideo taskVideo;
+	DatagramSocket s;
+	InetAddress Ip;
 
 	private long last_update = 0;
 	private float intY = 0, intZ = 0;
@@ -46,8 +46,18 @@ public class MainActivity extends Activity implements SensorEventListener {
 		setContentView(R.layout.activity_main);
 
 
-		DatagramSocket s = new DatagramSocket();
-		InetAddress Ip = InetAddress.getByName(host);
+		
+		try {
+			s = new DatagramSocket();
+			Ip = InetAddress.getByName(host);
+		} catch (SocketException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 		// Para enviar los datos de velocidad y giro al movil.
 		hc = new HiloControl(s, valControl, Ip, port);
