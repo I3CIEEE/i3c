@@ -1,5 +1,7 @@
 package com.i3c.mandoioio;
 
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.util.List;
 
 import android.app.Activity;
@@ -16,20 +18,21 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class MainActivity extends Activity implements OnTouchListener,
-		SensorEventListener {
+public class MainActivity extends Activity implements SensorEventListener {
 
+	int port = 15000; //Ip y puerto StremingServer
+	String host = "192.168.43.36";
+	
 	private HiloControl hc;
 	private Thread thc;
-	private Coordenada coor = new Coordenada();
-	private RelativeLayout entrada;
-	private int centroX;
-	private int centroY;
+	private ValoresControl valControl = new ValoresControl();
+//	private RelativeLayout entrada;
+//	private int centroX;
+//	private int centroY;
 	private TaskVideo taskVideo = new TaskVideo();
 
 	private long last_update = 0;
 	private float intY = 0, intZ = 0;
-	private float derY = 0, derZ = 0;
 	private float proY = 0, proZ = 0;
 	private float preY = 0, preZ = 0;
 	private float P = (float) 0.3;
@@ -42,40 +45,45 @@ public class MainActivity extends Activity implements OnTouchListener,
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+
+		DatagramSocket s = new DatagramSocket();
+		InetAddress Ip = InetAddress.getByName(host);
+		
 		// Para enviar los datos de velocidad y giro al movil.
-		// hc = new HiloControl(coor);
-		// thc = new Thread(hc);
-		// thc.start();
+		hc = new HiloControl(valControl, Ip);
+		thc = new Thread(hc);
+		thc.start();
 
 		// Para recibir y mostrar las imagenes recibidas.
 		ImageView iv = (ImageView) findViewById(R.id.videoImage);
-		// taskVideo.execute(iv);
+		taskVideo.execute(iv);
+		
 
 		pitchTV = (TextView) findViewById(R.id.pitch_value);
 		rollTV = (TextView) findViewById(R.id.roll_value);
 
 	}
 
-	@Override
-	public boolean onTouch(View v, MotionEvent event) {
-		if (MotionEvent.ACTION_UP == event.getAction()) {
-			System.err.println("despuseado");
-			coor.setPush(false);
-		} else if (MotionEvent.ACTION_DOWN == event.getAction()) {
-			System.err.println("puseado");
-			if (centroX == 0) {
-				centroY = entrada.getHeight() / 2;
-				centroX = entrada.getWidth() / 2;
-			}
-			coor.setX(event.getX() - centroX);
-			coor.setY(event.getY() - centroY);
-			coor.setPush(true);
-		} else {
-			coor.setX(event.getX() - centroX);
-			coor.setY(event.getY() - centroY);
-		}
-		return true;
-	}
+//	@Override
+//	public boolean onTouch(View v, MotionEvent event) {
+//		if (MotionEvent.ACTION_UP == event.getAction()) {
+//			System.err.println("despuseado");
+//			coor.setPush(false);
+//		} else if (MotionEvent.ACTION_DOWN == event.getAction()) {
+//			System.err.println("puseado");
+//			if (centroX == 0) {
+//				centroY = entrada.getHeight() / 2;
+//				centroX = entrada.getWidth() / 2;
+//			}
+//			coor.setX(event.getX() - centroX);
+//			coor.setY(event.getY() - centroY);
+//			coor.setPush(true);
+//		} else {
+//			coor.setX(event.getX() - centroX);
+//			coor.setY(event.getY() - centroY);
+//		}
+//		return true;
+//	}
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -100,8 +108,8 @@ public class MainActivity extends Activity implements OnTouchListener,
 			float Z;
 			intY = proY * P + intY * I;
 			intZ = proZ * P + intZ * I;
-			Y = intY + derY;
-			Z = intZ + derZ;
+			Y = intY;
+			Z = intZ;
 
 			last_update = current_time;
 			if (Math.abs(Y - preY + Z - preZ) > 0.1) {
@@ -109,6 +117,8 @@ public class MainActivity extends Activity implements OnTouchListener,
 				rollTV.setText(Float.toString(Z * 90));
 				preY = Y;
 				preZ = Z;
+				
+				valControl.setY(Y);
 			}
 		}
 

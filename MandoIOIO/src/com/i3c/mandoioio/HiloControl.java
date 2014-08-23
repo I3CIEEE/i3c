@@ -21,8 +21,8 @@ public class HiloControl implements Runnable{
 			int port = 15000; //Ip y puerto StremingServer
 			String host = "192.168.43.36";
 			
-//			DatagramSocket s = new DatagramSocket();
-//			InetAddress Ip = InetAddress.getByName(host);
+			DatagramSocket s = new DatagramSocket();
+			InetAddress Ip = InetAddress.getByName(host);
 			for(;;){
 				if(coor.isPush()){
 					System.out.println("X: " + coor.getX());

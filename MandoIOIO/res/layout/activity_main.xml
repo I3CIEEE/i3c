@@ -5,6 +5,7 @@
 
     <ImageView
         android:id="@+id/videoImage"
+        android:contentDescription="@string/video"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
