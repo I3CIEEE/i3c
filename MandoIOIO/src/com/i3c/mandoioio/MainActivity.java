@@ -57,6 +57,7 @@ public class MainActivity extends Activity implements SensorEventListener {
 		// Para recibir y mostrar las imagenes recibidas.
 		ImageView iv = (ImageView) findViewById(R.id.videoImage);
 		taskVideo = new TaskVideo(iv, s);
+		
 		taskVideo.execute();
 		
 
