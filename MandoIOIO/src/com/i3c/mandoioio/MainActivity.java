@@ -27,7 +27,7 @@ import android.widget.TextView;
 public class MainActivity extends Activity implements SensorEventListener {
 
 	int port = 15000; // Ip y puerto StremingServer
-	String host = "192.168.43.36";
+	String host = "192.168.1.132";
 
 	private HiloControl hc;
 	private Thread thc;
@@ -207,7 +207,7 @@ public class MainActivity extends Activity implements SensorEventListener {
 
 	public void stop(View v) {
 		TextView tv = (TextView) findViewById(R.id.velocidad);
-		tv.setText(000);
+		tv.setText("000");
 		valControl.setVeloc(500);
 	}
 
