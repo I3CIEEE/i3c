@@ -10,9 +10,9 @@ public class HiloControl implements Runnable {
 	ValoresControl valControl;
 	InetAddress Ip;
 	int port;
-	
 
-	public HiloControl(DatagramSocket s, ValoresControl valControl, InetAddress Ip, int port) {
+	public HiloControl(DatagramSocket s, ValoresControl valControl,
+			InetAddress Ip, int port) {
 		this.s = s;
 		this.valControl = valControl;
 		this.Ip = Ip;
@@ -21,18 +21,20 @@ public class HiloControl implements Runnable {
 
 	@Override
 	public void run() {
-		try {
-			
-			int giro = (int)Math.round(valControl.getY());
+		for (;;) {
+			try {
+				Thread.sleep(20);
+				int giro = (int) Math.round(valControl.getGiro());
 
-			byte[] sendData = intToByteArray(giro);
-			DatagramPacket sendPacket = new DatagramPacket(sendData,
-					sendData.length, Ip, port);
+				byte[] sendData = intToByteArray(giro);
+				DatagramPacket sendPacket = new DatagramPacket(sendData,
+						sendData.length, Ip, port);
 
-			s.send(sendPacket);
-		} catch (Exception e) {
-			e.printStackTrace();
+				s.send(sendPacket);
+			} catch (Exception e) {
+				e.printStackTrace();
 
+			}
 		}
 	}
 

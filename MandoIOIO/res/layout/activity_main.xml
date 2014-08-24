@@ -53,14 +53,38 @@
         </LinearLayout>
     </LinearLayout>
 
-    <SeekBar
-        android:id="@+id/seekBar1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <Button
+        android:id="@+id/stop"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="66dp"
-        android:layout_marginLeft="57dp"
-        android:layout_toRightOf="@+id/linearLayout1"
-        android:rotation="270" />
+        android:layout_alignParentLeft="true"
+        android:onClick="stop"
+        android:text="@string/stop" />
+
+    <Button
+        android:id="@+id/acelera"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_above="@+id/decelera"
+        android:layout_alignParentRight="true" />
+
+    <Button
+        android:id="@+id/decelera"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="54dp" />
+
+    <TextView
+        android:id="@+id/velocidad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/acelera"
+        android:text="000"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="40sp" />
 
 </RelativeLayout>

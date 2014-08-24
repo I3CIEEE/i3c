@@ -7,5 +7,6 @@
     <string name="pitch_value">0</string>
     <string name="roll_value">0</string>
     <string name="video"></string>
+    <string name="stop">Stop</string>
 
 </resources>

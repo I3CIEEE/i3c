@@ -27,11 +27,14 @@ public class TaskVideo extends AsyncTask<Void, Bitmap, Void>{
 	
 	@Override
 	protected Void doInBackground(Void... params) {
+		
 		try {
 			for(;;){
 				s.receive(reply);
+				System.out.println("llega");
 				InputStream in = new ByteArrayInputStream(buffer);
 				Bitmap bm = BitmapFactory.decodeStream(in);
+				System.out.println(bm);
 				publishProgress(bm);
 				if(isCancelled())
 					break;
