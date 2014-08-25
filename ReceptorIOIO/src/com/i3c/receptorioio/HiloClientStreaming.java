@@ -16,7 +16,6 @@ public class HiloClientStreaming extends Thread {
 		try {
 			DatagramPacket sendPacket = new DatagramPacket(output, output.length);
 			s.send(sendPacket);
-			//System.out.println("me cago en to");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

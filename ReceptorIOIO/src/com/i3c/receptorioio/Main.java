@@ -45,6 +45,7 @@ public class Main extends IOIOActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		System.out.println("aplicacion adri");
 		setContentView(R.layout.layout_main);
 		TextView txtView =(TextView) findViewById(R.id.textView1);
 		ClientProp.setPort(port);

@@ -9,8 +9,6 @@ import java.util.Formatter;
 import java.util.List;
 
 import com.i3c.mandoioio.R;
-import com.i3c.mandoioio.R.id;
-import com.i3c.mandoioio.R.layout;
 
 import android.app.Activity;
 import android.hardware.Sensor;
@@ -29,7 +27,7 @@ import android.widget.TextView;
 public class MainActivity extends Activity implements SensorEventListener {
 
 	private int port = 15000; // Ip y puerto StremingServer
-	private String host = "192.168.1.132";
+	private String host = "192.168.1.136";
 
 	private HiloControl hc;
 	private Thread thc;
@@ -228,7 +226,6 @@ public class MainActivity extends Activity implements SensorEventListener {
 					Y = Integer.signum(Math.round(Y))*400;
 				pitchTV.setText(Float.toString(Y));
 				ImageView iv = (ImageView) findViewById(R.id.flecha);
-				System.out.println(45-Y/400*90);
 				iv.setRotation(45-Y/400*90);
 				valControl.setGiro(Y+400);
 			}
