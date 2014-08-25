@@ -183,10 +183,16 @@ public class Main extends IOIOActivity {
 				image.compressToJpeg(rectangle, 71, out);
 				
 				if(ClientProp.isSet()){
-					// Add at the beginning of the arrayImage, the numSec
+					byte[] allToguether;
+					
+					// Add at the beginning of the arrayImage, the type of msg (photo = 1)
+					byte[] numType = ByteBuffer.allocate(4).putInt(1).array();
+					// Add the numSec next to the type
 					byte[] numSecArray = ByteBuffer.allocate(4).putInt(numSec).array();
 					numSec++;
-					byte[] allToguether = concatenateByteArrays(out.toByteArray(),numSecArray);
+					//everething
+					allToguether = concatenateByteArrays(numType, numSecArray);
+					allToguether = concatenateByteArrays(allToguether, out.toByteArray());
 					
 					SendStreaming(allToguether,	ClientProp.getIPAddress(),ClientProp.getPort());
 				}
@@ -195,10 +201,10 @@ public class Main extends IOIOActivity {
 		}
 	};
 	
-	byte[] concatenateByteArrays(byte[] a, byte[] b) {
-		byte[] result = new byte[a.length + b.length];
-		System.arraycopy(b, 0, result, 0, b.length);
-		System.arraycopy(a, 0, result, b.length, a.length);
+	byte[] concatenateByteArrays(byte[] first, byte[] second) {
+		byte[] result = new byte[second.length + first.length];
+		System.arraycopy(first, 0, result, 0, first.length);
+		System.arraycopy(second, 0, result, first.length, second.length);
 		return result;
 	}
 	
