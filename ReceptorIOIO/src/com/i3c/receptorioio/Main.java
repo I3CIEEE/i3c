@@ -2,7 +2,10 @@ package com.i3c.receptorioio;
 
 import java.io.ByteArrayOutputStream;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.SocketException;
+import java.nio.ByteBuffer;
+
 import ioio.lib.util.IOIOLooper;
 import ioio.lib.util.android.IOIOActivity;
 import android.graphics.ImageFormat;
@@ -25,8 +28,10 @@ public class Main extends IOIOActivity {
 	public static int mensaje_giro = 500;
 	
 	//Socket
+	private Client_Properties ClientProp = new Client_Properties();
 	DatagramSocket s;
 	int port = 15000;
+	static int numSec = 0;
 	
 	//Camera
 	private SurfaceView preview = null;
@@ -42,10 +47,11 @@ public class Main extends IOIOActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.layout_main);
 		TextView txtView =(TextView) findViewById(R.id.textView1);
+		ClientProp.setPort(port);
 		
 		try {
 			s = new DatagramSocket(port);
-			StartServer(txtView,s);
+			StartServer(txtView, s, ClientProp);
 		} catch (SocketException e) {
 			e.printStackTrace();
 		}
@@ -175,24 +181,39 @@ public class Main extends IOIOActivity {
 
 				ByteArrayOutputStream out = new ByteArrayOutputStream();
 				image.compressToJpeg(rectangle, 71, out);
-
-				SendStreaming(out.toByteArray());
+				
+				if(ClientProp.isSet()){
+					// Add at the beginning of the arrayImage, the numSec
+					byte[] numSecArray = ByteBuffer.allocate(4).putInt(numSec).array();
+					numSec++;
+					byte[] allToguether = concatenateByteArrays(out.toByteArray(),numSecArray);
+					
+					SendStreaming(allToguether,	ClientProp.getIPAddress(),ClientProp.getPort());
+				}
+				
 			}
 		}
 	};
 	
-	public void SendStreaming(byte[] out) {
+	byte[] concatenateByteArrays(byte[] a, byte[] b) {
+		byte[] result = new byte[a.length + b.length];
+		System.arraycopy(b, 0, result, 0, b.length);
+		System.arraycopy(a, 0, result, b.length, a.length);
+		return result;
+	}
+	
+	public void SendStreaming(byte[] out, InetAddress addr, int port) {
 		try {
-			HiloSendStreaming obj = new HiloSendStreaming(out, s);
+			HiloSendStreaming obj = new HiloSendStreaming(out, s, addr, port);
 			(new Thread(obj)).start();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public void StartServer(TextView txtView, DatagramSocket s) {
+	public void StartServer(TextView txtView, DatagramSocket s, Client_Properties cP) {
 		try {
-			HiloServidor obj = new HiloServidor(s, txtView);
+			HiloServidor obj = new HiloServidor(s, txtView, cP);
 			(new Thread(obj)).start();
 			//obj.start();
 		} catch (Exception e) {

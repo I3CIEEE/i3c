@@ -8,10 +8,12 @@ import android.widget.TextView;
 public class HiloServidor extends Thread {
 	DatagramSocket s;
 	TextView txtView;
+	Client_Properties cP;
 
-	HiloServidor(DatagramSocket s, TextView txtView) {
+	HiloServidor(DatagramSocket s, TextView txtView, Client_Properties cP) {
 		this.s = s;
 		this.txtView = txtView;
+		this.cP = cP;
 	}
 
 	public void run() {
@@ -26,6 +28,10 @@ public class HiloServidor extends Thread {
 				// Esperamos a recibir algun paquete de un cliente.
 				s.receive(request);
 				//Main.cambiarEstado("recibo "+ buffer,txtView);
+				if(!cP.isSet()){
+					cP.setIPAddress(request.getAddress());
+					cP.setSet(true);
+				}
 				System.out.println("recibo "+ buffer);
 				Main.mensaje_giro = byteArrayToInt(buffer);
 			}
