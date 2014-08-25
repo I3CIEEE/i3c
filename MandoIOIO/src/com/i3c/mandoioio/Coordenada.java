@@ -1,5 +1,6 @@
 package com.i3c.mandoioio;
 
+
 public class Coordenada {
 	private float x;
 	private float y;

@@ -1,5 +1,6 @@
 package com.i3c.mandoioio;
 
+
 public class ValoresControl {
 	float veloc = 500;
 	float giro = 500;

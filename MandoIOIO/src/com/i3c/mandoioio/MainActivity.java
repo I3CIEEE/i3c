@@ -1,5 +1,6 @@
 package com.i3c.mandoioio;
 
+
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
@@ -7,27 +8,28 @@ import java.net.UnknownHostException;
 import java.util.Formatter;
 import java.util.List;
 
+import com.i3c.mandoioio.R;
+import com.i3c.mandoioio.R.id;
+import com.i3c.mandoioio.R.layout;
+
 import android.app.Activity;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 public class MainActivity extends Activity implements SensorEventListener {
 
-	int port = 15000; // Ip y puerto StremingServer
-	String host = "192.168.1.132";
+	private int port = 15000; // Ip y puerto StremingServer
+	private String host = "192.168.1.132";
 
 	private HiloControl hc;
 	private Thread thc;
@@ -36,17 +38,15 @@ public class MainActivity extends Activity implements SensorEventListener {
 	// private int centroX;
 	// private int centroY;
 	private TaskVideo taskVideo;
-	DatagramSocket s;
-	InetAddress Ip;
+	private DatagramSocket s;
+	private InetAddress Ip;
+	private HiloRecepcion hr;
 
 	private long last_update = 0;
-	private float intY = 0, intZ = 0;
-	private float proY = 0, proZ = 0;
-	private float preY = 0, preZ = 0;
-	private float P = (float) 0.3;
-	private float I = (float) 0.7;
-	private TextView pitchTV;
-	private TextView rollTV;
+	private float intY = 0, preY = 0, proY = 0;
+	private float P = 0.3f, I = 0.7f;
+	private DatagramTypeSave dts;
+	private Formatter fmt;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +63,6 @@ public class MainActivity extends Activity implements SensorEventListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("conexion establecida");
 
 		// Para enviar los datos de velocidad y giro al movil.
 		hc = new HiloControl(s, valControl, Ip, port);
@@ -72,28 +71,31 @@ public class MainActivity extends Activity implements SensorEventListener {
 
 		// Para recibir y mostrar las imagenes recibidas.
 		ImageView iv = (ImageView) findViewById(R.id.videoImage);
-		taskVideo = new TaskVideo(iv, s);
-
+		dts = new DatagramTypeSave();
+		taskVideo = new TaskVideo(iv, dts);
 		taskVideo.execute();
-
-		pitchTV = (TextView) findViewById(R.id.pitch_value);
-		rollTV = (TextView) findViewById(R.id.roll_value);
+		
+		hr = new HiloRecepcion(s, dts);
+		(new Thread(hr)).start();
 
 		controlVeloc();
 	}
 
 	public void controlVeloc() {
+
+		fmt = new Formatter();
+		
 		Button bAcelerador = (Button) findViewById(R.id.acelera);
 		bAcelerador.setOnTouchListener(new OnTouchListener() {
-			private Formatter fmt;
 
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				fmt = new Formatter();
 				TextView tv = (TextView) findViewById(R.id.velocidad);
 				int veloc = Integer.valueOf((String) tv.getText()) + 1;
 				String num;
-				if(veloc < 0)
+				if(Math.abs(veloc)>=400)
+					num = Integer.toString((Integer.signum(veloc) * 400));
+				else if(veloc < 0)
 					num = (fmt.format("%04" + "d", veloc)).toString();
 				else
 					num = (fmt.format("%03d", veloc)).toString();
@@ -108,11 +110,12 @@ public class MainActivity extends Activity implements SensorEventListener {
 
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				fmt = new Formatter();
 				TextView tv = (TextView) findViewById(R.id.velocidad);
 				int veloc = Integer.valueOf((String) tv.getText()) - 1;
 				String num;
-				if(veloc < 0)
+				if(Math.abs(veloc)>=400)
+					num = Integer.toString((Integer.signum(veloc) * 400));
+				else if(veloc < 0)
 					num = (fmt.format("%04" + "d", veloc)).toString();
 				else
 					num = (fmt.format("%03d", veloc)).toString();
@@ -121,6 +124,56 @@ public class MainActivity extends Activity implements SensorEventListener {
 				return false;
 			}
 		});
+		Button bSacelerador = (Button) findViewById(R.id.superacelera);
+		bSacelerador.setOnTouchListener(new OnTouchListener() {
+			private Formatter fmt;
+
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				TextView tv = (TextView) findViewById(R.id.velocidad);
+				int veloc = Integer.valueOf((String) tv.getText()) + 10;
+				String num;
+				if(Math.abs(veloc)>=400)
+					num = Integer.toString((Integer.signum(veloc) * 400));
+				else if(veloc < 0)
+					num = (fmt.format("%04" + "d", veloc)).toString();
+				else
+					num = (fmt.format("%03d", veloc)).toString();
+				tv.setText(num);
+				valControl.setVeloc(veloc);
+				return false;
+			}
+		});
+		Button bSdecelerador = (Button) findViewById(R.id.superdecelera);
+		bSdecelerador.setOnTouchListener(new OnTouchListener() {
+
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				TextView tv = (TextView) findViewById(R.id.velocidad);
+				int veloc = Integer.valueOf((String) tv.getText()) - 10;
+				String num;
+				if(Math.abs(veloc)>=400)
+					num = Integer.toString((Integer.signum(veloc) * 400));
+				else if(veloc < 0)
+					num = (fmt.format("%04" + "d", veloc)).toString();
+				else
+					num = (fmt.format("%03d", veloc)).toString();
+				tv.setText(num);
+				valControl.setVeloc(veloc);
+				return false;
+			}
+		});
+		Button bStop = (Button) findViewById(R.id.stop);
+		bStop.setOnTouchListener(new OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				TextView tv = (TextView) findViewById(R.id.velocidad);
+				tv.setText("000");
+				valControl.setVeloc(500);
+				return false;
+			}
+		});
+
 	}
 
 	// @Override
@@ -159,25 +212,25 @@ public class MainActivity extends Activity implements SensorEventListener {
 		long current_time = event.timestamp;
 
 		proY = event.values[1];
-		proZ = event.values[2];
 
 		long time_difference = current_time - last_update;
 		if (time_difference > 0) {
 			float Y;
-			float Z;
 			intY = proY * P + intY * I;
-			intZ = proZ * P + intZ * I;
 			Y = intY;
-			Z = intZ;
 
 			last_update = current_time;
-			if (Math.abs(Y - preY + Z - preZ) > 0.1) {
-				// pitchTV.setText(Float.toString(Y * 90));
-				// rollTV.setText(Float.toString(Z * 90));
+			if (Math.abs(Y - preY) > 0.03) {
+				TextView pitchTV = (TextView) findViewById(R.id.pitch_value);
+				Y = Y *40;
 				preY = Y;
-				preZ = Z;
-
-				valControl.setGiro(Y);
+				if((Math.abs(Y)) > 400)
+					Y = Integer.signum(Math.round(Y))*400;
+				pitchTV.setText(Float.toString(Y));
+				ImageView iv = (ImageView) findViewById(R.id.flecha);
+				System.out.println(45-Y/400*90);
+				iv.setRotation(45-Y/400*90);
+				valControl.setGiro(Y+400);
 			}
 		}
 
@@ -203,12 +256,6 @@ public class MainActivity extends Activity implements SensorEventListener {
 		SensorManager sm = (SensorManager) getSystemService(SENSOR_SERVICE);
 		sm.unregisterListener(this);
 		super.onPause();
-	}
-
-	public void stop(View v) {
-		TextView tv = (TextView) findViewById(R.id.velocidad);
-		tv.setText("000");
-		valControl.setVeloc(500);
 	}
 
 }

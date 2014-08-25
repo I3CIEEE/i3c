@@ -12,47 +12,6 @@
         android:contentDescription="@string/video"
         android:src="@drawable/abc_ab_stacked_transparent_dark_holo" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <TextView
-                android:id="@+id/pitch_text"
-                android:layout_width="75dp"
-                android:layout_height="wrap_content"
-                android:text="@string/pitch_text" />
-
-            <TextView
-                android:id="@+id/pitch_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/pitch_value" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <TextView
-                android:id="@+id/roll_text"
-                android:layout_width="75dp"
-                android:layout_height="wrap_content"
-                android:text="@string/roll_text" />
-
-            <TextView
-                android:id="@+id/roll_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/roll_value" />
-        </LinearLayout>
-    </LinearLayout>
-
     <Button
         android:id="@+id/stop"
         android:layout_width="100dp"
@@ -63,28 +22,69 @@
         android:text="@string/stop" />
 
     <Button
-        android:id="@+id/acelera"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:layout_above="@+id/decelera"
+        android:id="@+id/superacelera"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true" />
+
+    <Button
+        android:id="@+id/superdecelera"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true" />
 
     <Button
         android:id="@+id/decelera"
         android:layout_width="75dp"
         android:layout_height="75dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="54dp" />
+        android:layout_above="@+id/superdecelera"
+        android:layout_alignParentRight="true" />
 
     <TextView
         android:id="@+id/velocidad"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/acelera"
+        android:layout_toLeftOf="@+id/superdecelera"
         android:text="000"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="40sp" />
+
+    <Button
+        android:id="@+id/acelera"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/superacelera" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true" >
+
+        <TextView
+            android:id="@+id/pitch_text"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:text="@string/pitch_text" />
+
+        <TextView
+            android:id="@+id/pitch_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pitch_value" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/flecha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:rotation="45"
+        android:src="@drawable/abc_ic_commit_search_api_holo_light" />
 
 </RelativeLayout>
