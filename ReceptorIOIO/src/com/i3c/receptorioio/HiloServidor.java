@@ -30,9 +30,10 @@ public class HiloServidor extends Thread {
 				//Main.cambiarEstado("recibo "+ buffer,txtView);
 				if(!cP.isSet()){
 					cP.setIPAddress(request.getAddress());
+					cP.setPort(request.getPort());
 					cP.setSet(true);
 				}
-				System.out.println("recibo "+ buffer);
+				Main.cambiarEstado("recibo "+ buffer,txtView);
 				Main.mensaje_giro = byteArrayToInt(buffer);
 			}
 			

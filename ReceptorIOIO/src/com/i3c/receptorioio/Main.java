@@ -48,7 +48,6 @@ public class Main extends IOIOActivity {
 		System.out.println("aplicacion adri");
 		setContentView(R.layout.layout_main);
 		TextView txtView =(TextView) findViewById(R.id.textView1);
-		ClientProp.setPort(port);
 		
 		try {
 			s = new DatagramSocket(port);
@@ -128,6 +127,7 @@ public class Main extends IOIOActivity {
 
 			if (!cameraConfigured) {
 				Camera.Parameters parameters = camera.getParameters();
+				parameters.setFocusMode(Camera.Parameters.FLASH_MODE_ON);
 				Display display = getWindowManager().getDefaultDisplay(); 
 				int width = display.getWidth();  // deprecated
 				int height = display.getHeight();  // deprecated

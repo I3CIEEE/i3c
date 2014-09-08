@@ -15,8 +15,8 @@
 
     <SurfaceView
         android:id="@+id/preview"
-        android:layout_width="1px"
-        android:layout_height="1px" >
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
     </SurfaceView>
 
 </LinearLayout>
