@@ -1,5 +1,8 @@
 package com.i3c.receptorioio;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 
@@ -19,7 +22,7 @@ public class HiloServidor extends Thread {
 	public void run() {
 		try {
 			// Creamos un buffer para entrada paquetes de un fotograma.
-			byte[] buffer = new byte[13];
+			byte[] buffer = new byte[16];
 			// Genera un datagrama para mensages de longitud indicada.
 			DatagramPacket request = new DatagramPacket(buffer, buffer.length);
 			Main.cambiarEstado("Server started, waiting..", txtView);
@@ -34,7 +37,23 @@ public class HiloServidor extends Thread {
 					cP.setSet(true);
 				}
 				Main.cambiarEstado("recibo "+ buffer,txtView);
-				Main.mensaje_giro = byteArrayToInt(buffer);
+				System.out.println(buffer.length);
+				
+				
+				ByteArrayInputStream bos = new ByteArrayInputStream(buffer);
+				DataInputStream dtI = new DataInputStream(bos);
+				
+				int type = dtI.readInt();
+				int nseq = dtI.readInt();
+				int giro = dtI.readInt();
+				int veloc = dtI.readInt();
+				
+				
+//				System.out.println("tipo     "+type);
+				System.out.println("nseq     "+nseq);
+				System.out.println("giro     "+giro);
+//				System.out.println("veloc     "+veloc);
+			
 			}
 			
 		} catch (Exception e) {

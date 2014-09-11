@@ -24,7 +24,7 @@ import android.widget.Toast;
 public class Main extends IOIOActivity {
 	
 	public static Handler handler = new Handler();
-	public static int mensaje_veloc = 550;
+	public static int mensaje_veloc = 600;
 	public static int mensaje_giro = 500;
 	
 	//Socket
@@ -91,26 +91,28 @@ public class Main extends IOIOActivity {
 		super.onPause();
 	}
 
-	private Camera.Size getBestPreviewSize(int width, int height,
+	private Camera.Size getWorstPreviewSize(int width, int height,
 			Camera.Parameters parameters) {
-		Camera.Size result = null;
-
-		for (Camera.Size size : parameters.getSupportedPreviewSizes()) {
-			if (size.width <= width && size.height <= height) {
-				if (result == null) {
-					result = size;
-				} else {
-					int resultArea = result.width * result.height;
-					int newArea = size.width * size.height;
-
-					if (newArea > resultArea) {
-						result = size;
-					}
-				}
-			}
-		}
-
-		return (result);
+		return parameters.getSupportedPreviewSizes().get(0);
+		
+//		Camera.Size result = null;
+//		
+//		for (Camera.Size size : parameters.getSupportedPreviewSizes()) {
+//			if (size.width <= width && size.height <= height) {
+//				if (result == null) {
+//					result = size;
+//				} else {
+//					int resultArea = result.width * result.height;
+//					int newArea = size.width * size.height;
+//
+//					if (newArea > resultArea) {
+//						result = size;
+//					}
+//				}
+//			}
+//		}
+//
+//		return (result);
 	}
 
 	private void initPreview() {
@@ -127,11 +129,11 @@ public class Main extends IOIOActivity {
 
 			if (!cameraConfigured) {
 				Camera.Parameters parameters = camera.getParameters();
-				parameters.setFocusMode(Camera.Parameters.FLASH_MODE_ON);
+				//parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
 				Display display = getWindowManager().getDefaultDisplay(); 
 				int width = display.getWidth();  // deprecated
 				int height = display.getHeight();  // deprecated
-				size = getBestPreviewSize(width, height, parameters);
+				size = getWorstPreviewSize(width, height, parameters);
 
 				if (size != null) {
 					parameters.setPreviewSize(size.width, size.height);
@@ -181,7 +183,11 @@ public class Main extends IOIOActivity {
 						size.width, size.height, null /* strides */);
 
 				ByteArrayOutputStream out = new ByteArrayOutputStream();
-				image.compressToJpeg(rectangle, 71, out);
+				image.compressToJpeg(rectangle, 20, out);
+
+				System.out.println("tamaño:" + out.size());
+				System.out.println("tamaño alto:" + size.width);
+				System.out.println("tamaño ancho:" + size.height);
 				
 				if(ClientProp.isSet()){
 					byte[] allToguether;
