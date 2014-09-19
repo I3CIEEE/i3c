@@ -1,8 +1,8 @@
 package com.i3c.receptorioio;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
+import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 
@@ -12,53 +12,71 @@ public class HiloServidor extends Thread {
 	DatagramSocket s;
 	TextView txtView;
 	Client_Properties cP;
+	int nSeq;
+	boolean hasCome;
+	InterTimming intTim;
 
 	HiloServidor(DatagramSocket s, TextView txtView, Client_Properties cP) {
 		this.s = s;
 		this.txtView = txtView;
 		this.cP = cP;
+		this.hasCome =false;
+		this.nSeq = -1;
+		this.intTim= new InterTimming();
 	}
 
 	public void run() {
 		try {
-			// Creamos un buffer para entrada paquetes de un fotograma.
+			
 			byte[] buffer = new byte[16];
-			// Genera un datagrama para mensages de longitud indicada.
 			DatagramPacket request = new DatagramPacket(buffer, buffer.length);
 			Main.cambiarEstado("Server started, waiting..", txtView);
-			//Main.cambiarEstado("Esperando conexion",txtView);
 			while (true) {
-				// Esperamos a recibir algun paquete de un cliente.
+				
 				s.receive(request);
-				//Main.cambiarEstado("recibo "+ buffer,txtView);
-				if(!cP.isSet()){
+				if (!cP.isSet()) {
 					cP.setIPAddress(request.getAddress());
 					cP.setPort(request.getPort());
 					cP.setSet(true);
 				}
-				Main.cambiarEstado("recibo "+ buffer,txtView);
-				System.out.println(buffer.length);
-				
-				
+				Main.cambiarEstado("recibo ", txtView);
+
 				ByteArrayInputStream bos = new ByteArrayInputStream(buffer);
 				DataInputStream dtI = new DataInputStream(bos);
 				
 				int type = dtI.readInt();
-				int nseq = dtI.readInt();
-				int giro = dtI.readInt();
-				int veloc = dtI.readInt();
 				
-				
-//				System.out.println("tipo     "+type);
-				System.out.println("nseq     "+nseq);
-				System.out.println("giro     "+giro);
-//				System.out.println("veloc     "+veloc);
-			
+
+				if (type == 2) {
+					int nseqRecv = dtI.readInt();
+					
+					intTim.setNseq(nseqRecv);
+					Timming obj = new Timming(intTim,nseqRecv);
+					(new Thread(obj)).start();
+					
+					if (nseqRecv > nSeq) {
+						nSeq = nseqRecv;
+						SetsGyV(dtI);
+					}
+				}
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void SetsGyV(DataInputStream dtI) {
+		try {
+			Main.mensaje_giro = dtI.readInt();
+			Main.mensaje_veloc = dtI.readInt();
+			System.out.println("traza: giro: "+ Main.mensaje_giro);
+			System.out.println("traza: veloc: "+ Main.mensaje_veloc);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 	public static int byteArrayToInt(byte[] b) {

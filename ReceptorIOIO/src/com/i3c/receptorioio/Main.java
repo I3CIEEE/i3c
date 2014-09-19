@@ -5,7 +5,6 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.nio.ByteBuffer;
-
 import ioio.lib.util.IOIOLooper;
 import ioio.lib.util.android.IOIOActivity;
 import android.graphics.ImageFormat;
@@ -15,7 +14,6 @@ import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.Display;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.TextView;
@@ -24,7 +22,7 @@ import android.widget.Toast;
 public class Main extends IOIOActivity {
 	
 	public static Handler handler = new Handler();
-	public static int mensaje_veloc = 600;
+	public static int mensaje_veloc = 550;
 	public static int mensaje_giro = 500;
 	
 	//Socket
@@ -91,9 +89,8 @@ public class Main extends IOIOActivity {
 		super.onPause();
 	}
 
-	private Camera.Size getWorstPreviewSize(int width, int height,
-			Camera.Parameters parameters) {
-		return parameters.getSupportedPreviewSizes().get(0);
+	private Camera.Size getWorstPreviewSize(Camera.Parameters parameters) {
+		return parameters.getSupportedPreviewSizes().get(3);
 		
 //		Camera.Size result = null;
 //		
@@ -129,12 +126,12 @@ public class Main extends IOIOActivity {
 
 			if (!cameraConfigured) {
 				Camera.Parameters parameters = camera.getParameters();
-				//parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
-				Display display = getWindowManager().getDefaultDisplay(); 
-				int width = display.getWidth();  // deprecated
-				int height = display.getHeight();  // deprecated
-				size = getWorstPreviewSize(width, height, parameters);
-
+				parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
+//				Display display = getWindowManager().getDefaultDisplay(); 
+//				int width = display.getWidth();  // deprecated
+//				int height = display.getHeight();  // deprecated
+//				size = getWorstPreviewSize(width, height, parameters);
+				size = getWorstPreviewSize(parameters);
 				if (size != null) {
 					parameters.setPreviewSize(size.width, size.height);
 					camera.setParameters(parameters);
@@ -183,11 +180,7 @@ public class Main extends IOIOActivity {
 						size.width, size.height, null /* strides */);
 
 				ByteArrayOutputStream out = new ByteArrayOutputStream();
-				image.compressToJpeg(rectangle, 20, out);
-
-				System.out.println("tamaño:" + out.size());
-				System.out.println("tamaño alto:" + size.width);
-				System.out.println("tamaño ancho:" + size.height);
+				image.compressToJpeg(rectangle, 90, out);
 				
 				if(ClientProp.isSet()){
 					byte[] allToguether;
