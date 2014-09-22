@@ -21,7 +21,12 @@ public class ValoresControl {
 		return giro;
 	}
 	public void setGiro(int giro) {
-		this.giro = giro;
+		if(giro > 800)
+			this.giro = 800;
+		else if(giro < 200)
+			this.giro = 200;
+		else
+			this.giro = giro;
 	}
 
 }

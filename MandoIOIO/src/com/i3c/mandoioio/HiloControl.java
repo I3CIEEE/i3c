@@ -8,10 +8,11 @@ import java.net.InetAddress;
 
 public class HiloControl implements Runnable {
 
-	DatagramSocket s;
-	ValoresControl valControl;
-	InetAddress Ip;
-	int port;
+	private DatagramSocket s;
+	private ValoresControl valControl;
+	private InetAddress Ip;
+	private int port;
+	private int descalibrado = 50;
 
 	public HiloControl(DatagramSocket s, ValoresControl valControl,
 			InetAddress Ip, int port) {
@@ -38,7 +39,7 @@ public class HiloControl implements Runnable {
 				dout.writeInt(2);
 				dout.writeInt(nseq);
 				dout.writeInt(giro);
-				dout.writeInt(veloc);
+				dout.writeInt(veloc + descalibrado);
 				
 				sendData = out.toByteArray();
 //				System.out.println(sendData.length);
