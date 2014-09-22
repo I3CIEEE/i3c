@@ -2,20 +2,25 @@ package com.i3c.mandoioio;
 
 
 public class ValoresControl {
-	float veloc = 500;
-	float giro = 500;
+	int veloc = 500;
+	int giro = 500;
 	
-	public float getVeloc() {
+	public int getVeloc() {
 		return veloc;
 	}
-	public void setVeloc(float veloc) {
-		this.veloc = veloc;
+	public void setVeloc(int veloc) {
+		if(veloc > 800)
+			this.veloc = 800;
+		else if(veloc < 200)
+			this.veloc = 200;
+		else
+			this.veloc = veloc;
 	}
 	
-	public float getGiro() {
+	public int getGiro() {
 		return giro;
 	}
-	public void setGiro(float giro) {
+	public void setGiro(int giro) {
 		this.giro = giro;
 	}
 

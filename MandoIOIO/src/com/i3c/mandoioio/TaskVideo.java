@@ -9,14 +9,15 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class TaskVideo extends AsyncTask<Void, Bitmap, Void> {
 
 	ImageView video;
 	DatagramTypeSave dts;
-	int nSeq = 0;
+	int nSeq = -1;
 
-	public TaskVideo(ImageView video, DatagramTypeSave dts) {
+	public TaskVideo(ImageView video, DatagramTypeSave dts, TextView nSeqFoto) {
 		this.video = video;
 		this.dts = dts;
 	}
@@ -31,7 +32,6 @@ public class TaskVideo extends AsyncTask<Void, Bitmap, Void> {
 				nSeq = ins.readInt();
 				if (nSeq > this.nSeq) {
 					System.out.println("foto nº: " + nSeq);
-					this.nSeq = nSeq;
 					Bitmap bm = BitmapFactory.decodeStream(ins);
 					publishProgress(bm);
 				}

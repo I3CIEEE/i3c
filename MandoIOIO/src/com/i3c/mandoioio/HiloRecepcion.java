@@ -17,20 +17,16 @@ public class HiloRecepcion implements Runnable {
 	public HiloRecepcion(DatagramSocket s, DatagramTypeSave dts) {
 		this.s = s;
 		this.dts = dts;
-		buffer = new byte[15000];
+		buffer = new byte[70000];
 		reply = new DatagramPacket(buffer, buffer.length);
 	}
-
+ 
 	@Override
 	public void run() {
 		for (;;) {
 			try {
-				Thread.sleep(20);
-			} catch (InterruptedException e) {
-				break;
-			}
-			try {
 				s.receive(reply);
+				System.out.println("llega");
 				DataInputStream din = new DataInputStream(
 						new ByteArrayInputStream(buffer));
 
@@ -47,6 +43,7 @@ public class HiloRecepcion implements Runnable {
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				break;
 			}
 		}
 	}
