@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="tiposCompress">
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+		<item>40</item>
+        <item>50</item>
+        <item>60</item>
+		<item>70</item>
+        <item>80</item>
+        <item>90</item>
+    </string-array>
+	<string-array name="tiposCompressValues">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+		<item>3</item>
+        <item>4</item>
+        <item>5</item>
+		<item>6</item>
+        <item>7</item>
+        <item>8</item>
+    </string-array>
+    <string-array name="tiposPrevPhoto">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+		<item>3</item>
+    </string-array>
+    <string-array name="tiposPrevPhotoValues">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+		<item>3</item>
+    </string-array>
+
+</resources>

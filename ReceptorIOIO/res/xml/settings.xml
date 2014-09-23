@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:key="preferencias_principal" >
+
+     <ListPreference
+        android:defaultValue="0"
+        android:entries="@array/tiposPrevPhoto"
+        android:entryValues="@array/tiposPrevPhotoValues"
+        android:key="PrevPhoto"
+        android:summary="Calidad siendo 0 la peor, pero de menor tamaño"
+        android:title="Calidad de imagen" />
+
+	 <ListPreference
+        android:defaultValue="20"
+        android:entries="@array/tiposCompress"
+        android:entryValues="@array/tiposCompressValues"
+        android:key="Compress"
+        android:summary="Tasa de Compresión siendo 10 la peor"
+        android:title="Calidad de compresión JPG" />
+
+</PreferenceScreen>

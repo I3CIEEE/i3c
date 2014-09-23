@@ -3,6 +3,5 @@
     <string name="app_name">ReceptorIOIO</string>
 
     <string name="ServerNotRunning">Server not Running</string>
-    <string name="sett">Settings</string>
 
 </resources>

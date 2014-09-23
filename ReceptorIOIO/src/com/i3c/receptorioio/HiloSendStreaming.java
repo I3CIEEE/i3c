@@ -19,7 +19,7 @@ public class HiloSendStreaming extends Thread {
 
 	public void run() {
 		try {
-			System.out.println("longitud      "+output.length);
+			//System.out.println("longitud      "+output.length);
 			DatagramPacket sendPacket = new DatagramPacket(output, output.length, addr, port);
 			s.send(sendPacket);
 			//System.out.println("envio");

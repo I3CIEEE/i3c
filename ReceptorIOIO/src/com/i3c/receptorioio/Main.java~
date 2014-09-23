@@ -145,10 +145,7 @@ public class Main extends IOIOActivity {
 	}
 
 	private Camera.Size getWorstPreviewSize(Camera.Parameters parameters) {
-		TextView txtView =(TextView) findViewById(R.id.textView1);
-		cambiarEstado("w"+ parameters.getSupportedPreviewSizes().get(Integer.parseInt(typeScreenPreview)).width+"  h"+parameters.getSupportedPreviewSizes().get(Integer.parseInt(typeScreenPreview)).height, txtView);
-		//1ºguardo en array, 2º devuelvo la size que toca
-		
+		System.out.println("ACAAAAAAAAAAAAAA  "+ Integer.parseInt(typeScreenPreview));
 		return parameters.getSupportedPreviewSizes().get(Integer.parseInt(typeScreenPreview));
 		
 //		Camera.Size result = null;
