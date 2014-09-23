@@ -13,7 +13,7 @@ public class Timming extends Thread {
 
 	public void run() {
 		try {
-			sleep(200);
+			sleep(Main.lagMax);
 			if(intTim.getNseq()==nseqAntes){
 				Main.mensaje_giro = 500;
 				Main.mensaje_veloc = 550;

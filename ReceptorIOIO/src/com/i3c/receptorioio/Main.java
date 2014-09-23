@@ -5,6 +5,8 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.nio.ByteBuffer;
+import java.util.Stack;
+
 import ioio.lib.util.IOIOLooper;
 import ioio.lib.util.android.IOIOActivity;
 import android.content.Intent;
@@ -30,6 +32,10 @@ public class Main extends IOIOActivity {
 	public static Handler handler = new Handler();
 	public static int mensaje_veloc = 550;
 	public static int mensaje_giro = 500;
+	public static boolean gravando = false;
+	public static boolean reproduciendo = false;
+	public static Stack<Movimientos> gravacion;
+	public static long lagMax = 200;
 	
 	//Socket
 	private Client_Properties ClientProp = new Client_Properties();
