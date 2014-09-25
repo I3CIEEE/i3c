@@ -2,7 +2,6 @@ package com.i3c.mandoioio;
 
 
 import java.io.DataInputStream;
-import java.io.InputStream;
 
 public class Fotos {
 	private boolean fotoLeida = true;
