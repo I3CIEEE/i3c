@@ -3,7 +3,7 @@ package com.i3c.receptorioio;
 import java.util.Stack;
 
 public class Movimientos {
-	private Stack<Movimiento> movimientos;
+	private Stack<Movimiento> movimientos = new Stack<Movimiento>();
 
 	public Stack<Movimiento> getMovimientos() {
 		return movimientos;

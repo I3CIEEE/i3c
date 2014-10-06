@@ -1,20 +1,24 @@
 package com.i3c.receptorioio;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.ServerSocket;
 import java.net.SocketException;
 import java.nio.ByteBuffer;
 import java.util.Stack;
 
 import ioio.lib.util.IOIOLooper;
 import ioio.lib.util.android.IOIOActivity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.ImageFormat;
 import android.graphics.Rect;
 import android.graphics.YuvImage;
 import android.hardware.Camera;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -34,14 +38,17 @@ public class Main extends IOIOActivity {
 	public static int mensaje_giro = 500;
 	public static boolean gravando = false;
 	public static boolean reproduciendo = false;
-	public static Stack<Movimientos> gravacion;
+	public static Stack<Movimientos> gravacion = new Stack<Movimientos>();
 	public static long lagMax = 200;
+
 	
 	//Socket
 	private Client_Properties ClientProp = new Client_Properties();
 	DatagramSocket s;
 	int port = 15000;
 	static int numSec = 0;
+	private ServerSocket ss;
+	private Thread hiloVoz;
 	
 	//Camera
 	private SurfaceView preview = null;
@@ -62,6 +69,9 @@ public class Main extends IOIOActivity {
 		super.onCreate(savedInstanceState);
 		System.out.println("aplicacion adri");
 		setContentView(R.layout.layout_main);
+		RellenaMovimientos rm = new RellenaMovimientos(gravacion);
+		rm.rellena();
+		
 		TextView txtView =(TextView) findViewById(R.id.textView1);
 		
 		try {
@@ -70,12 +80,14 @@ public class Main extends IOIOActivity {
 		} catch (SocketException e) {
 			e.printStackTrace();
 		}
+
+		HiloOrdenesVoz hov = new HiloOrdenesVoz(getApplicationContext(), ss);
+		hiloVoz = new Thread(hov);
+		hiloVoz.start();
 		
 		preview = (SurfaceView) findViewById(R.id.preview);
 		previewHolder = preview.getHolder();
 		previewHolder.addCallback(surfaceCallback);
-		
-		
 	}
 
 	@Override
@@ -101,6 +113,13 @@ public class Main extends IOIOActivity {
 			camera.release();
 			camera = null;
 			inPreview = false;
+			try {
+				ss.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			hiloVoz.interrupt();
 			
 		}
 		super.onPause();
@@ -191,7 +210,7 @@ public class Main extends IOIOActivity {
 
 			if (!cameraConfigured) {
 				Camera.Parameters parameters = camera.getParameters();
-				parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
+//				parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
 //				Display display = getWindowManager().getDefaultDisplay(); 
 //				int width = display.getWidth();  // deprecated
 //				int height = display.getHeight();  // deprecated

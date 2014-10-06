@@ -71,8 +71,8 @@ public class HiloServidor extends Thread {
 	public void SetsGyV(DataInputStream dtI, boolean gravando) {
 		try {
 			if(!Main.reproduciendo){
-			Main.mensaje_giro = dtI.readInt();
-			Main.mensaje_veloc = dtI.readInt();
+				Main.mensaje_giro = dtI.readInt();
+				Main.mensaje_veloc = dtI.readInt();
 			}
 			if (Main.gravando) {
 				if (movimientos == null)
@@ -87,11 +87,11 @@ public class HiloServidor extends Thread {
 				}
 				movimientos.getMovimientos().add(movimiento);
 			} else {
-				if (movimientos != null)
+				if (movimientos != null){
 					Main.gravacion.add(movimientos);
+					movimientos = null;
+				}
 			}
-			System.out.println("traza: giro: " + Main.mensaje_giro);
-			System.out.println("traza: veloc: " + Main.mensaje_veloc);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
