@@ -3,9 +3,7 @@ package com.i3c.mandoioio;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
-
 import android.os.Bundle;
 import android.speech.RecognitionListener;
 import android.speech.SpeechRecognizer;
@@ -29,7 +27,7 @@ class MyRecognitionListener implements RecognitionListener {
 
 	@Override
 	public void onError(int error) {
-		System.out.println("onError " + error);
+		MainActivity.cambiarEstado("FAILED");
 	}
 
 	@Override
@@ -53,6 +51,7 @@ class MyRecognitionListener implements RecognitionListener {
 		ArrayList<String> strlist = results
 				.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
 		int orden=0;
+		String s = "";
 		for (int i = 0; i < strlist.size(); i++) {
 			orden = checkWord(strlist.get(i));
 			if (orden>0){
@@ -69,10 +68,11 @@ class MyRecognitionListener implements RecognitionListener {
 		}
 		System.out.println("orden "+orden);
 		System.out.println("orden t"+type);
-		//MainActivity.cambiarEstado(Integer.toString(orden));
+		
 		//Add tipo
 		if(orden>0){
 			
+			MainActivity.cambiarEstado(Integer.toString(orden)+" "+strlist.get(strlist.size()-1));
 			byte[] sendData = null;
 			
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -81,17 +81,19 @@ class MyRecognitionListener implements RecognitionListener {
 			try {
 				dout.writeInt(type);
 				dout.writeInt(orden);
-			} catch (IOException e) {
+				
+				sendData = out.toByteArray();	
+				HiloSendVoz obj = new HiloSendVoz(sendData);
+				(new Thread(obj)).start();
+			} catch (IOException e) {				
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
 			
-			sendData = out.toByteArray();
 			
-			
-			HiloSendVoz obj = new HiloSendVoz(sendData);
-			(new Thread(obj)).start();
+		}else{
+			MainActivity.cambiarEstado("FAILED");
 		}
 	}
 	

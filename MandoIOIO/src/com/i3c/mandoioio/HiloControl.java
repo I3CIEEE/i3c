@@ -47,6 +47,8 @@ public class HiloControl implements Runnable {
 				DatagramPacket sendPacket = new DatagramPacket(sendData,
 						sendData.length, Ip, port);
 				s.send(sendPacket);
+				
+				System.out.println("envio "+veloc);
 				nseq ++;
 			} catch (Exception e) {
 				e.printStackTrace();

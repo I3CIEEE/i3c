@@ -14,10 +14,8 @@ public class HiloSendVoz extends Thread {
 		try {
 			Socket s = new Socket(MainActivity.IPer, 1234);
 			
-			System.out.println("orden envio");
 			DataOutputStream dOut = new DataOutputStream(s.getOutputStream());
 
-//			dOut.writeInt(output.length); // write length of the message
 			dOut.write(output);
 			System.out.println("orden envio");
 			s.close();
