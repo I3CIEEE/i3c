@@ -1202,8 +1202,9 @@ containing a value of this type.
         public static final int caballo=0x7f060000;
         public static final int cerdo=0x7f060001;
         public static final int perroleon=0x7f060002;
-        public static final int vaca=0x7f060003;
-        public static final int victoria=0x7f060004;
+        public static final int sonidosexy=0x7f060003;
+        public static final int vaca=0x7f060004;
+        public static final int victoria=0x7f060005;
     }
     public static final class string {
         public static final int ServerNotRunning=0x7f0c000e;

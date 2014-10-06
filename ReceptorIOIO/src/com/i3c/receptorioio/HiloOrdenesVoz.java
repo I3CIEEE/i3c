@@ -56,15 +56,18 @@ public class HiloOrdenesVoz extends Thread {
 	public void runOrden(DataInputStream in) throws IOException {
 		Stack<Movimiento> movimientos;
 		int orden = in.readInt();
+		int contador_ligar;
 		System.out.println("orden = " + orden);
 		switch (orden) {
 		case 1:
 			// serhii samu
+			System.out.println("gorrino");
 			sonido = MediaPlayer.create(context, R.raw.cerdo);
 			sonido.start();
 			break;
 		case 2:
 			// ataca
+			System.out.println("ataca");
 			sonido = MediaPlayer.create(context, R.raw.perroleon);
 			sonido.start();
 			movimientos = Main.gravacion.get(0).getMovimientos();
@@ -82,21 +85,25 @@ public class HiloOrdenesVoz extends Thread {
 			break;
 		case 5:
 			// busca
+			System.out.println("busca");
 			movimientos = Main.gravacion.get(2).getMovimientos();
 			mueve(movimientos);
 			break;
 		case 6:
 			// victoria
+			System.out.println("victoria");
 			sonido = MediaPlayer.create(context, R.raw.victoria);
 			sonido.start();
 			break;
 		case 7:
 			// caballo
+			System.out.println("caballo");
 			sonido = MediaPlayer.create(context, R.raw.caballo);
 			sonido.start();
 			break;
 		case 8:
 			// vaca
+			System.out.println("vaca");
 			sonido = MediaPlayer.create(context, R.raw.vaca);
 			sonido.start();
 			break;
@@ -105,10 +112,34 @@ public class HiloOrdenesVoz extends Thread {
 			movimientos = Main.gravacion.get(3).getMovimientos();
 			mueve(movimientos);
 			break;
+		case 10:
+			//liga
+			System.out.println("Liga");
+			sonido = MediaPlayer.create(context, R.raw.sonidosexy);
+			sonido.start();
+			ligando();
+			sonido.stop();
+			break;
 		default:
 			break;
 		}
 
+	}
+	
+	private void ligando()
+	{
+		Main.ligarOn = true;
+		for(int contador_ligar = 0; contador_ligar <= 50; contador_ligar++)
+		{
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				break;
+			}
+		}
+		Main.ligarOn = false;
 	}
 
 	private void mueve(Stack<Movimiento> movimientos) {

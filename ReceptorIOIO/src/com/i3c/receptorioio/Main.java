@@ -36,6 +36,7 @@ public class Main extends IOIOActivity {
 	public static Handler handler = new Handler();
 	public static int mensaje_veloc = 550;
 	public static int mensaje_giro = 500;
+	public static boolean ligarOn = false;
 	public static boolean gravando = false;
 	public static boolean reproduciendo = false;
 	public static Stack<Movimientos> gravacion = new Stack<Movimientos>();

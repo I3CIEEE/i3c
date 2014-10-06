@@ -19,14 +19,17 @@ public class BucleIOIO extends BaseIOIOLooper{
 		led = ioio_.openDigitalOutput(0, true);
 		servo = ioio_.openPwmOutput(4, 50); //3 y 50Hz Velocidad
 		variador = ioio_.openPwmOutput(13, 50); // Servo
+	//	ojoizquierdo = ioio_.openDigitalOutput(18, true);
+	//	ojoderecho = ioio_.openDigitalOutput(19, true);
 	}
 
 	@Override
 	public void loop() throws ConnectionLostException {
-		led.write(false);
 		try {
 			servo.setPulseWidth(1000 + Main.mensaje_veloc);
 			variador.setPulseWidth(1000 + Main.mensaje_giro);
+			led.write(!Main.ligarOn);
+			//ojoderecho.write(!Main.ligarOn);
 			Thread.sleep(100);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
