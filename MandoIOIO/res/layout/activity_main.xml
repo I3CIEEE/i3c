@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/superdecelera"
-        android:text="000"
+        android:text="@string/ceross"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="40sp" />
 
@@ -84,6 +84,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
+        android:contentDescription="@string/description"
         android:rotation="45"
         android:src="@drawable/abc_ic_commit_search_api_holo_light" />
 
@@ -93,7 +94,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/linearLayout1"
-        android:text="Foto" />
+        android:text="@string/fps" />
 
     <TextView
         android:id="@+id/nFotoValor"
@@ -101,6 +102,30 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/linearLayout1"
         android:layout_toRightOf="@+id/nfotoText"
-        android:text="0" />
+        android:text="@string/uncero" />
+
+    <Button
+        android:id="@+id/buttonRec"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_above="@+id/stop"
+        android:layout_alignParentLeft="true"
+        android:text="@string/Record" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="75dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/nfotoText"
+        android:text="@string/VozCode" />
+
+    <TextView
+        android:id="@+id/vozCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/nfotoText"
+        android:layout_toRightOf="@+id/textView1"
+        android:text="@string/uncero" />
 
 </RelativeLayout>

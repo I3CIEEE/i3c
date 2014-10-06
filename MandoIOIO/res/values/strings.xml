@@ -9,5 +9,11 @@
     <string name="video"></string>
     <string name="stop">Stop</string>
     <string name="sett">Settings</string>
+    <string name="Record">Record</string>
+    <string name="ceross">000</string>
+    <string name="uncero">0</string>
+    <string name="fps">FPS</string>
+    <string name="description">flecha</string>
+    <string name="VozCode">VozCode</string>
 
 </resources>

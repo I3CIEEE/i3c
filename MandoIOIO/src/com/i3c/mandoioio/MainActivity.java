@@ -9,9 +9,6 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.Formatter;
 import java.util.List;
-
-import com.i3c.mandoioio.R;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,7 +20,10 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -58,6 +58,13 @@ public class MainActivity extends Activity implements SensorEventListener {
 	
 	private ImageView video;
 	private TextView fps;
+	
+	private SpeechRecognizer mSpeechRecognizer;
+	private Intent mSpeechRecognizerIntent; 
+	private boolean mIslistening;
+	public static String IPer;
+	public static TextView vozCode;
+	public static Handler handler = new Handler();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +74,7 @@ public class MainActivity extends Activity implements SensorEventListener {
 		
 		video = (ImageView) findViewById(R.id.videoImage);
 		fps = (TextView) findViewById(R.id.nFotoValor);
+		vozCode = (TextView) findViewById(R.id.vozCode);
 
 		try {
 			s = new DatagramSocket();
@@ -96,6 +104,18 @@ public class MainActivity extends Activity implements SensorEventListener {
 		thc2.start();
 
 		controlVeloc();
+		
+		mSpeechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
+	    mSpeechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+	    mSpeechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+	                                     RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+	    mSpeechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE,
+	                                     this.getPackageName());
+	    
+	    MyRecognitionListener listener = new MyRecognitionListener();
+	    mSpeechRecognizer.setRecognitionListener(listener);
+	    
+	    buttonBehaviour();
 	}
 
 	@Override
@@ -119,9 +139,7 @@ public class MainActivity extends Activity implements SensorEventListener {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == 2345) {
 
-			System.out.println("ENTRaaaaaaaaaaaa");
-			String IPer = mostrarPreferencias();
-			System.out.println(IPer);
+			IPer = mostrarPreferencias();
 
 			try {
 				s = new DatagramSocket();
@@ -152,6 +170,16 @@ public class MainActivity extends Activity implements SensorEventListener {
 			hr = new HiloRecepcion(s, dts);
 			thc2 = new Thread(hr);
 			thc2.start();
+			
+			mSpeechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
+		    mSpeechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+		    mSpeechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+		                                     RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+		    mSpeechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE,
+		                                     this.getPackageName());
+		    
+		    MyRecognitionListener listener = new MyRecognitionListener();
+		    mSpeechRecognizer.setRecognitionListener(listener);
 
 		}
 	}
@@ -322,7 +350,42 @@ public class MainActivity extends Activity implements SensorEventListener {
 		thc.interrupt();
 		thc2.interrupt();
 		taskVideo.cancel(true);
+		if (mSpeechRecognizer != null){
+	        mSpeechRecognizer.destroy();
+		}
+		s.close();
 		super.onPause();
+	}
+	
+	public void buttonBehaviour(){
+		Button button = (Button) findViewById(R.id.buttonRec);
+		button.setOnTouchListener(new OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if(event.getAction() == MotionEvent.ACTION_DOWN) {
+					if(!mIslistening){
+						mSpeechRecognizer.startListening(mSpeechRecognizerIntent);
+						System.out.println("Entra");
+						mIslistening = true;
+					}
+		        } else if (event.getAction() == MotionEvent.ACTION_UP) {
+		        	mSpeechRecognizer.stopListening();
+		        	mIslistening = false;
+		        	System.out.println("Sale");
+		        }
+				return false;
+			}
+		});
+	}
+	
+	public static void cambiarEstado(final String text) {
+		handler.post(new Runnable() {
+			@Override
+			public void run() {
+				vozCode.setText(text);
+				
+			}
+		});
 	}
 
 	public class TaskVideo extends AsyncTask<Void, Object, Void> {
@@ -343,7 +406,7 @@ public class MainActivity extends Activity implements SensorEventListener {
 				try {
 					nSeq = ins.readInt();
 					if (nSeq > this.nSeq) {
-						System.out.println("foto nº: " + nSeq);
+						System.out.println("foto nï¿½: " + nSeq);
 						Bitmap bm = BitmapFactory.decodeStream(ins);
 						Object[] outUpdate = new Object[2];
 						outUpdate[0] = bm;
@@ -368,4 +431,6 @@ public class MainActivity extends Activity implements SensorEventListener {
 			fps.setText(Integer.toString((Integer)in[1]));
 		}
 	}
+	
+	
 }

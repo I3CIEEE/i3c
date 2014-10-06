@@ -1086,9 +1086,10 @@ containing a value of this type.
         public static final int activity_chooser_view_content=0x7f060025;
         public static final int always=0x7f06000b;
         public static final int beginning=0x7f060011;
+        public static final int buttonRec=0x7f06004a;
         public static final int checkbox=0x7f06002d;
         public static final int collapseActionView=0x7f06000d;
-        public static final int config=0x7f06004a;
+        public static final int config=0x7f06004d;
         public static final int decelera=0x7f060041;
         public static final int default_activity_button=0x7f060028;
         public static final int dialog=0x7f06000e;
@@ -1139,12 +1140,14 @@ containing a value of this type.
         public static final int superacelera=0x7f06003f;
         public static final int superdecelera=0x7f060040;
         public static final int tabMode=0x7f060002;
+        public static final int textView1=0x7f06004b;
         public static final int title=0x7f06002b;
         public static final int top_action_bar=0x7f060020;
         public static final int up=0x7f060021;
         public static final int useLogo=0x7f060003;
         public static final int velocidad=0x7f060042;
         public static final int videoImage=0x7f06003d;
+        public static final int vozCode=0x7f06004c;
         public static final int withText=0x7f06000c;
     }
     public static final class integer {
@@ -1204,6 +1207,8 @@ containing a value of this type.
         public static final int menu=0x7f0d0000;
     }
     public static final class string {
+        public static final int Record=0x7f0b0015;
+        public static final int VozCode=0x7f0b001a;
         /**  Content description for the action bar "home" affordance. [CHAR LIMIT=NONE] 
          */
         public static final int abc_action_bar_home_description=0x7f0b0001;
@@ -1245,12 +1250,16 @@ containing a value of this type.
          */
         public static final int abc_shareactionprovider_share_with_application=0x7f0b000b;
         public static final int app_name=0x7f0b000d;
+        public static final int ceross=0x7f0b0016;
+        public static final int description=0x7f0b0019;
+        public static final int fps=0x7f0b0018;
         public static final int pitch_text=0x7f0b000e;
         public static final int pitch_value=0x7f0b0010;
         public static final int roll_text=0x7f0b000f;
         public static final int roll_value=0x7f0b0011;
         public static final int sett=0x7f0b0014;
         public static final int stop=0x7f0b0013;
+        public static final int uncero=0x7f0b0017;
         public static final int video=0x7f0b0012;
     }
     public static final class style {
