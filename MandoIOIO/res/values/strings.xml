@@ -15,5 +15,9 @@
     <string name="fps">FPS</string>
     <string name="description">flecha</string>
     <string name="VozCode">VozCode</string>
+    <string name="cambiomarcha">cambiomarcha</string>
+    <string name="R">Back</string>
+    <string name="Back">R</string>
+    <string name="Forward">D</string>
 
 </resources>

@@ -15,48 +15,10 @@
     <Button
         android:id="@+id/stop"
         android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_height="65dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:text="@string/stop" />
-
-    <Button
-        android:id="@+id/superacelera"
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true" />
-
-    <Button
-        android:id="@+id/superdecelera"
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true" />
-
-    <Button
-        android:id="@+id/decelera"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:layout_above="@+id/superdecelera"
-        android:layout_alignParentRight="true" />
-
-    <TextView
-        android:id="@+id/velocidad"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/superdecelera"
-        android:text="@string/ceross"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="40sp" />
-
-    <Button
-        android:id="@+id/acelera"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/superacelera" />
 
     <LinearLayout
         android:id="@+id/linearLayout1"
@@ -104,14 +66,6 @@
         android:layout_toRightOf="@+id/nfotoText"
         android:text="@string/uncero" />
 
-    <Button
-        android:id="@+id/buttonRec"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_above="@+id/stop"
-        android:layout_alignParentLeft="true"
-        android:text="@string/Record" />
-
     <TextView
         android:id="@+id/textView1"
         android:layout_width="75dp"
@@ -127,5 +81,45 @@
         android:layout_below="@+id/nfotoText"
         android:layout_toRightOf="@+id/textView1"
         android:text="@string/uncero" />
+
+    <Button
+        android:id="@+id/buttonRec"
+        android:layout_width="100dp"
+        android:layout_height="65dp"
+        android:layout_above="@+id/stop"
+        android:text="@string/Record" />
+
+ 
+
+    <com.i3c.mandoioio.VerticalSeekBar
+        android:id="@+id/vertical_Seekbar"
+        android:layout_width="wrap_content"
+        android:layout_height="150dip"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"/>
+
+    <ToggleButton
+        android:id="@+id/cambiomarcha"
+        android:layout_width="100dp"
+        android:layout_height="65dp"
+        android:layout_above="@+id/buttonRec"
+        android:layout_alignParentLeft="true"
+        android:text="@string/cambiomarcha"
+        android:textOff="@string/Forward"
+        android:textOn="@string/Back" />
+
+    <TextView
+        android:id="@+id/velocidad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/vertical_Seekbar"
+        android:text="@string/ceross"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="40sp" />
 
 </RelativeLayout>

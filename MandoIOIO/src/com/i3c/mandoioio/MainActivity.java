@@ -29,9 +29,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 public class MainActivity extends Activity implements SensorEventListener {
@@ -58,6 +60,8 @@ public class MainActivity extends Activity implements SensorEventListener {
 	
 	private ImageView video;
 	private TextView fps;
+	private SeekBar sbAcelerador;
+	private TextView mTvVeloc;
 	
 	private SpeechRecognizer mSpeechRecognizer;
 	private Intent mSpeechRecognizerIntent; 
@@ -71,6 +75,12 @@ public class MainActivity extends Activity implements SensorEventListener {
 		System.out.println("aplicacion daniel");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		//Cosas de la seekbar
+		mTvVeloc = (TextView) findViewById(R.id.velocidad);
+		MySeekBarListener sbPruebaAcelerador = new MySeekBarListener(valControl, mTvVeloc);
+		sbAcelerador = (SeekBar) findViewById(R.id.vertical_Seekbar);
+		sbAcelerador.setOnSeekBarChangeListener(sbPruebaAcelerador);		
 		
 		video = (ImageView) findViewById(R.id.videoImage);
 		fps = (TextView) findViewById(R.id.nFotoValor);
@@ -192,70 +202,108 @@ public class MainActivity extends Activity implements SensorEventListener {
 	}
 
 	public void controlVeloc() {
-
-		Button bAcelerador = (Button) findViewById(R.id.acelera);
-		bAcelerador.setOnTouchListener(new OnTouchListener() {
-
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				TextView tv = (TextView) findViewById(R.id.velocidad);
-				int veloc = valControl.getVeloc() + 1;
-				valControl.setVeloc(veloc);
-				String num = formateaVeloc(valControl.getVeloc() - 500);
-				tv.setText(num);
-				return false;
+		
+		Button bMarcha = (Button) findViewById(R.id.cambiomarcha);
+		bMarcha.setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				valControl.cambiomarcha = !valControl.cambiomarcha;
+				sbAcelerador.setProgress(0);
 			}
 		});
-		Button bDecelerador = (Button) findViewById(R.id.decelera);
-		bDecelerador.setOnTouchListener(new OnTouchListener() {
-
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				TextView tv = (TextView) findViewById(R.id.velocidad);
-				int veloc = valControl.getVeloc() - 1;
-				valControl.setVeloc(veloc);
-				String num = formateaVeloc(valControl.getVeloc() - 500);
-				tv.setText(num);
-				return false;
-			}
-		});
-		Button bSacelerador = (Button) findViewById(R.id.superacelera);
-		bSacelerador.setOnTouchListener(new OnTouchListener() {
-
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				TextView tv = (TextView) findViewById(R.id.velocidad);
-				int veloc = valControl.getVeloc() + 10;
-				valControl.setVeloc(veloc);
-				String num = formateaVeloc(valControl.getVeloc() - 500);
-				tv.setText(num);
-				return false;
-			}
-		});
-		Button bSdecelerador = (Button) findViewById(R.id.superdecelera);
-		bSdecelerador.setOnTouchListener(new OnTouchListener() {
-
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				TextView tv = (TextView) findViewById(R.id.velocidad);
-				int veloc = valControl.getVeloc() - 10;
-				valControl.setVeloc(veloc);
-				String num = formateaVeloc(valControl.getVeloc() - 500);
-				tv.setText(num);
-				return false;
-			}
-		});
+//		Button bAcelerador = (Button) findViewById(R.id.acelera);
+//		bAcelerador.setOnTouchListener(new OnTouchListener() {
+//
+//			@Override
+//			public boolean onTouch(View v, MotionEvent event) {
+//				TextView tv = (TextView) findViewById(R.id.velocidad);
+//				int veloc = valControl.getVeloc() + 1;
+//				valControl.setVeloc(veloc);
+//				String num = formateaVeloc(valControl.getVeloc() - 500);
+//				tv.setText(num);
+//				return false;
+//			}
+//		});
+//		Button bDecelerador = (Button) findViewById(R.id.decelera);
+//		bDecelerador.setOnTouchListener(new OnTouchListener() {
+//
+//			@Override
+//			public boolean onTouch(View v, MotionEvent event) {
+//				TextView tv = (TextView) findViewById(R.id.velocidad);
+//				int veloc = valControl.getVeloc() - 1;
+//				valControl.setVeloc(veloc);
+//				String num = formateaVeloc(valControl.getVeloc() - 500);
+//				tv.setText(num);
+//				return false;
+//			}
+//		});
+//		Button bSacelerador = (Button) findViewById(R.id.superacelera);
+//		bSacelerador.setOnTouchListener(new OnTouchListener() {
+//
+//			@Override
+//			public boolean onTouch(View v, MotionEvent event) {
+//				TextView tv = (TextView) findViewById(R.id.velocidad);
+//				int veloc = valControl.getVeloc() + 10;
+//				valControl.setVeloc(veloc);
+//				String num = formateaVeloc(valControl.getVeloc() - 500);
+//				tv.setText(num);
+//				return false;
+//			}
+//		});
+//		Button bSdecelerador = (Button) findViewById(R.id.superdecelera);
+//		bSdecelerador.setOnTouchListener(new OnTouchListener() {
+//
+//			@Override
+//			public boolean onTouch(View v, MotionEvent event) {
+//				TextView tv = (TextView) findViewById(R.id.velocidad);
+//				int veloc = valControl.getVeloc() - 10;
+//				valControl.setVeloc(veloc);
+//				String num = formateaVeloc(valControl.getVeloc() - 500);
+//				tv.setText(num);
+//				return false;
+//			}
+//		});
+//		Button bStop = (Button) findViewById(R.id.stop);
+//		bStop.setOnTouchListener(new OnTouchListener() {
+//			@Override
+//			public boolean onTouch(View v, MotionEvent event) {
+//				TextView tv = (TextView) findViewById(R.id.velocidad);
+//				tv.setText("000");
+//				valControl.setVeloc(500);
+//				return false;
+//			}
+//		});
+//
+//	}
 		Button bStop = (Button) findViewById(R.id.stop);
 		bStop.setOnTouchListener(new OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				TextView tv = (TextView) findViewById(R.id.velocidad);
-				tv.setText("000");
-				valControl.setVeloc(500);
+				mTvVeloc.setText("Frenando!!!");
+				if(valControl.cmOnTouch){
+					if(valControl.getVeloc() != 500){
+						valControl.setVeloc((valControl.getVeloc()/2) + 250);
+						mTvVeloc.setText("000");
+						valControl.cmOnTouch = true;
+					}
+				}
+				valControl.cmOnTouch = false;
+//				if (valControl.getVeloc() != 500 )
+//					valControl.setVeloc(1000);
+				sbAcelerador.setProgress(0);
 				return false;
 			}
 		});
-
+		
+		bStop.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				
+				mTvVeloc.setText("000");
+				valControl.cmOnTouch = true;
+				valControl.setVeloc(0);
+			}
+		});
 	}
 
 	private String formateaVeloc(int veloc) {
